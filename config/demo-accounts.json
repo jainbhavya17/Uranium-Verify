@@ -1,0 +1,8 @@
+{
+  "password": "Uranium@2026!",
+  "accounts": [
+    { "label": "Institution", "email": "admin.a@demo.uranium.test" },
+    { "label": "Officer", "email": "officer.a@demo.uranium.test" },
+    { "label": "Administrator", "email": "platform@demo.uranium.test" }
+  ]
+}

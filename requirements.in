@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+sqlalchemy
+alembic
+psycopg[binary]
+pytest
+httpx
+ruff
+PyMuPDF
+Pillow
+opencv-python-headless
+python-multipart
+c2pa-python
+pyhanko
+pgvector
+fastembed
+reportlab

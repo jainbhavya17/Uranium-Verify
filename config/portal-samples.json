@@ -1,0 +1,1550 @@
+{
+  "institutions": [
+    {
+      "id": "INS-1-4412",
+      "name": "Shri Venkateshwara Institute of Technology",
+      "aicteId": "1-4412873",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "type": "Private Self-Financing"
+    },
+    {
+      "id": "INS-1-3301",
+      "name": "Government Engineering College, Bhilai",
+      "aicteId": "1-3301156",
+      "state": "Chhattisgarh",
+      "city": "Durg",
+      "type": "Government"
+    },
+    {
+      "id": "INS-1-5520",
+      "name": "Narmada Valley College of Engineering",
+      "aicteId": "1-5520934",
+      "state": "Madhya Pradesh",
+      "city": "Jabalpur",
+      "type": "Private Self-Financing"
+    },
+    {
+      "id": "INS-1-2087",
+      "name": "Coastal Institute of Management Studies",
+      "aicteId": "1-2087401",
+      "state": "Kerala",
+      "city": "Kochi",
+      "type": "Private Aided"
+    },
+    {
+      "id": "INS-1-6634",
+      "name": "Rajputana Polytechnic College",
+      "aicteId": "1-6634218",
+      "state": "Rajasthan",
+      "city": "Jaipur",
+      "type": "Private Self-Financing"
+    }
+  ],
+  "applications": [
+    {
+      "id": "APP-01482",
+      "ref": "AICTE/2026/APP/01482",
+      "institutionId": "INS-1-4412",
+      "type": "Increase in Intake",
+      "status": "Deficiency Raised",
+      "createdOn": "2026-09-01",
+      "submittedOn": "2026-09-14",
+      "assignedOfficer": "Sh. Arvind Sharma",
+      "details": {
+        "programme": "Engineering & Technology",
+        "course": "B.Tech Computer Science & Engineering",
+        "intake": 180,
+        "academicYear": "2026-27",
+        "landArea": 12.5,
+        "builtUpArea": 11800,
+        "facultyCount": 8,
+        "principal": "Dr. Meera Kulkarni",
+        "address": "Survey No. 54, Ambegaon Bk., Pune 411046"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Mismatch Found",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-03",
+          "findings": "Area stated in document does not match the area declared in the application form."
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D03_fire.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D04_affidavit.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D05_faculty.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D06_audited.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D07_university.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Not Submitted"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-09-01 10:12",
+          "by": "Dr. Meera Kulkarni",
+          "action": "Draft created"
+        },
+        {
+          "at": "2026-09-14 16:40",
+          "by": "Dr. Meera Kulkarni",
+          "action": "Application submitted"
+        },
+        {
+          "at": "2026-09-20 11:05",
+          "by": "Sh. Arvind Sharma",
+          "action": "Scrutiny commenced"
+        },
+        {
+          "at": "2026-10-03 15:22",
+          "by": "Sh. Arvind Sharma",
+          "action": "Deficiency raised",
+          "remark": "Built-up area mismatch in Building Completion Certificate"
+        }
+      ],
+      "frozen": {
+        "details": {
+          "programme": "Engineering & Technology",
+          "course": "B.Tech Computer Science & Engineering",
+          "intake": 180,
+          "academicYear": "2026-27",
+          "landArea": 12.5,
+          "builtUpArea": 11800,
+          "facultyCount": 8,
+          "principal": "Dr. Meera Kulkarni",
+          "address": "Survey No. 54, Ambegaon Bk., Pune 411046"
+        },
+        "documents": [
+          {
+            "code": "D01",
+            "name": "Land Registration / Lease Deed",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D01_land.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D02",
+            "name": "Building Completion Certificate",
+            "mandatory": true,
+            "status": "Mismatch Found",
+            "fileName": "D02_building.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-03",
+            "findings": "Area stated in document does not match the area declared in the application form."
+          },
+          {
+            "code": "D03",
+            "name": "Fire Safety Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D03_fire.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D04",
+            "name": "Affidavit on Non-Judicial Stamp Paper",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D04_affidavit.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D05",
+            "name": "Faculty List with Qualifications",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D05_faculty.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D06",
+            "name": "Audited Financial Statement (FY 2025-26)",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D06_audited.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D07",
+            "name": "University Affiliation Letter",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D07_university.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D08",
+            "name": "Structural Stability Certificate",
+            "mandatory": false,
+            "status": "Not Submitted"
+          }
+        ],
+        "submittedOn": "2026-09-14"
+      }
+    },
+    {
+      "id": "APP-01377",
+      "ref": "AICTE/2026/APP/01377",
+      "institutionId": "INS-1-4412",
+      "type": "Extension of Approval (EoA)",
+      "status": "Approved",
+      "createdOn": "2026-07-10",
+      "submittedOn": "2026-07-25",
+      "assignedOfficer": "Smt. Lakshmi Iyer",
+      "details": {
+        "programme": "Engineering & Technology",
+        "course": "M.Tech Structural Engineering",
+        "intake": 18,
+        "academicYear": "2026-27",
+        "landArea": 12.5,
+        "builtUpArea": 11800,
+        "facultyCount": 4,
+        "principal": "Dr. Meera Kulkarni",
+        "address": "Survey No. 54, Ambegaon Bk., Pune 411046"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D03_fire.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D04_affidavit.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D05_faculty.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D06_audited.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D07_university.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Verified",
+          "fileName": "D08_structural.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        }
+      ],
+      "decision": {
+        "decision": "Approved",
+        "officer": "Smt. Lakshmi Iyer",
+        "reason": "All mandatory norms under APH 2026-27 Clause 4.2 satisfied. Faculty and infrastructure verified.",
+        "at": "2026-08-21 12:30"
+      },
+      "history": [
+        {
+          "at": "2026-07-25 09:15",
+          "by": "Dr. Meera Kulkarni",
+          "action": "Application submitted"
+        },
+        {
+          "at": "2026-08-21 12:30",
+          "by": "Smt. Lakshmi Iyer",
+          "action": "Approved",
+          "remark": "All mandatory norms satisfied"
+        }
+      ],
+      "frozen": {
+        "details": {
+          "programme": "Engineering & Technology",
+          "course": "M.Tech Structural Engineering",
+          "intake": 18,
+          "academicYear": "2026-27",
+          "landArea": 12.5,
+          "builtUpArea": 11800,
+          "facultyCount": 4,
+          "principal": "Dr. Meera Kulkarni",
+          "address": "Survey No. 54, Ambegaon Bk., Pune 411046"
+        },
+        "documents": [
+          {
+            "code": "D01",
+            "name": "Land Registration / Lease Deed",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D01_land.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D02",
+            "name": "Building Completion Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D02_building.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D03",
+            "name": "Fire Safety Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D03_fire.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D04",
+            "name": "Affidavit on Non-Judicial Stamp Paper",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D04_affidavit.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D05",
+            "name": "Faculty List with Qualifications",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D05_faculty.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D06",
+            "name": "Audited Financial Statement (FY 2025-26)",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D06_audited.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D07",
+            "name": "University Affiliation Letter",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D07_university.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D08",
+            "name": "Structural Stability Certificate",
+            "mandatory": false,
+            "status": "Verified",
+            "fileName": "D08_structural.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          }
+        ],
+        "submittedOn": "2026-07-25"
+      }
+    },
+    {
+      "id": "APP-01519",
+      "ref": "AICTE/2026/APP/01519",
+      "institutionId": "INS-1-3301",
+      "type": "Introduction of New Course",
+      "status": "Under Scrutiny",
+      "createdOn": "2026-09-05",
+      "submittedOn": "2026-09-22",
+      "assignedOfficer": "Sh. Arvind Sharma",
+      "details": {
+        "programme": "Engineering & Technology",
+        "course": "B.Tech Artificial Intelligence & Data Science",
+        "intake": 60,
+        "academicYear": "2026-27",
+        "landArea": 28,
+        "builtUpArea": 24000,
+        "facultyCount": 4,
+        "principal": "Dr. Ramesh Sahu",
+        "address": "Sector 6, Bhilai Nagar, Durg 490006"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D03_fire.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D04_affidavit.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D05_faculty.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D06_audited.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D07_university.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Verified",
+          "fileName": "D08_structural.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-09-22 14:02",
+          "by": "Dr. Ramesh Sahu",
+          "action": "Application submitted"
+        },
+        {
+          "at": "2026-09-29 10:40",
+          "by": "Sh. Arvind Sharma",
+          "action": "Scrutiny commenced"
+        }
+      ],
+      "frozen": {
+        "details": {
+          "programme": "Engineering & Technology",
+          "course": "B.Tech Artificial Intelligence & Data Science",
+          "intake": 60,
+          "academicYear": "2026-27",
+          "landArea": 28,
+          "builtUpArea": 24000,
+          "facultyCount": 4,
+          "principal": "Dr. Ramesh Sahu",
+          "address": "Sector 6, Bhilai Nagar, Durg 490006"
+        },
+        "documents": [
+          {
+            "code": "D01",
+            "name": "Land Registration / Lease Deed",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D01_land.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D02",
+            "name": "Building Completion Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D02_building.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D03",
+            "name": "Fire Safety Certificate",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D03_fire.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D04",
+            "name": "Affidavit on Non-Judicial Stamp Paper",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D04_affidavit.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D05",
+            "name": "Faculty List with Qualifications",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D05_faculty.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D06",
+            "name": "Audited Financial Statement (FY 2025-26)",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D06_audited.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D07",
+            "name": "University Affiliation Letter",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D07_university.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D08",
+            "name": "Structural Stability Certificate",
+            "mandatory": false,
+            "status": "Verified",
+            "fileName": "D08_structural.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          }
+        ],
+        "submittedOn": "2026-09-22"
+      }
+    },
+    {
+      "id": "APP-01544",
+      "ref": "AICTE/2026/APP/01544",
+      "institutionId": "INS-1-5520",
+      "type": "Establishment of New Technical Institution",
+      "status": "Submitted",
+      "createdOn": "2026-09-18",
+      "submittedOn": "2026-10-06",
+      "details": {
+        "programme": "Engineering & Technology",
+        "course": "B.Tech Mechanical Engineering",
+        "intake": 60,
+        "academicYear": "2026-27",
+        "landArea": 5,
+        "builtUpArea": 5200,
+        "facultyCount": 3,
+        "principal": "Prof. Anil Tiwari",
+        "address": "Village Tilwara, NH-34, Jabalpur 482003"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D03_fire.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D04_affidavit.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D05_faculty.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D06_audited.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D07_university.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Not Submitted"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-06 17:55",
+          "by": "Prof. Anil Tiwari",
+          "action": "Application submitted"
+        }
+      ],
+      "frozen": {
+        "details": {
+          "programme": "Engineering & Technology",
+          "course": "B.Tech Mechanical Engineering",
+          "intake": 60,
+          "academicYear": "2026-27",
+          "landArea": 5,
+          "builtUpArea": 5200,
+          "facultyCount": 3,
+          "principal": "Prof. Anil Tiwari",
+          "address": "Village Tilwara, NH-34, Jabalpur 482003"
+        },
+        "documents": [
+          {
+            "code": "D01",
+            "name": "Land Registration / Lease Deed",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D01_land.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D02",
+            "name": "Building Completion Certificate",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D02_building.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D03",
+            "name": "Fire Safety Certificate",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D03_fire.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D04",
+            "name": "Affidavit on Non-Judicial Stamp Paper",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D04_affidavit.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D05",
+            "name": "Faculty List with Qualifications",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D05_faculty.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D06",
+            "name": "Audited Financial Statement (FY 2025-26)",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D06_audited.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D07",
+            "name": "University Affiliation Letter",
+            "mandatory": true,
+            "status": "Under Review",
+            "fileName": "D07_university.pdf",
+            "uploadedOn": "2026-09-12"
+          },
+          {
+            "code": "D08",
+            "name": "Structural Stability Certificate",
+            "mandatory": false,
+            "status": "Not Submitted"
+          }
+        ],
+        "submittedOn": "2026-10-06"
+      }
+    },
+    {
+      "id": "APP-01291",
+      "ref": "AICTE/2026/APP/01291",
+      "institutionId": "INS-1-2087",
+      "type": "Increase in Intake",
+      "status": "Rejected",
+      "createdOn": "2026-06-11",
+      "submittedOn": "2026-06-30",
+      "assignedOfficer": "Smt. Lakshmi Iyer",
+      "details": {
+        "programme": "Management",
+        "course": "MBA (Full Time)",
+        "intake": 240,
+        "academicYear": "2026-27",
+        "landArea": 2,
+        "builtUpArea": 3100,
+        "facultyCount": 6,
+        "principal": "Dr. Thomas Mathew",
+        "address": "Marine Drive, Ernakulam, Kochi 682031"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Mismatch Found",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-03",
+          "findings": "Area stated in document does not match the area declared in the application form."
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D03_fire.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D04_affidavit.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Mismatch Found",
+          "fileName": "D05_faculty.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-03",
+          "findings": "Area stated in document does not match the area declared in the application form."
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D06_audited.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D07_university.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Smt. Lakshmi Iyer",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Not Submitted"
+        }
+      ],
+      "decision": {
+        "decision": "Rejected",
+        "officer": "Smt. Lakshmi Iyer",
+        "reason": "Faculty-student ratio of 1:40 against prescribed 1:20 (APH Clause 5.1). Land area below minimum norm. Deficiency not rectified within stipulated period.",
+        "at": "2026-08-04 16:10"
+      },
+      "history": [
+        {
+          "at": "2026-06-30 11:20",
+          "by": "Dr. Thomas Mathew",
+          "action": "Application submitted"
+        },
+        {
+          "at": "2026-08-04 16:10",
+          "by": "Smt. Lakshmi Iyer",
+          "action": "Rejected",
+          "remark": "Faculty-student ratio not met"
+        }
+      ],
+      "frozen": {
+        "details": {
+          "programme": "Management",
+          "course": "MBA (Full Time)",
+          "intake": 240,
+          "academicYear": "2026-27",
+          "landArea": 2,
+          "builtUpArea": 3100,
+          "facultyCount": 6,
+          "principal": "Dr. Thomas Mathew",
+          "address": "Marine Drive, Ernakulam, Kochi 682031"
+        },
+        "documents": [
+          {
+            "code": "D01",
+            "name": "Land Registration / Lease Deed",
+            "mandatory": true,
+            "status": "Mismatch Found",
+            "fileName": "D01_land.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-03",
+            "findings": "Area stated in document does not match the area declared in the application form."
+          },
+          {
+            "code": "D02",
+            "name": "Building Completion Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D02_building.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D03",
+            "name": "Fire Safety Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D03_fire.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D04",
+            "name": "Affidavit on Non-Judicial Stamp Paper",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D04_affidavit.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D05",
+            "name": "Faculty List with Qualifications",
+            "mandatory": true,
+            "status": "Mismatch Found",
+            "fileName": "D05_faculty.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-03",
+            "findings": "Area stated in document does not match the area declared in the application form."
+          },
+          {
+            "code": "D06",
+            "name": "Audited Financial Statement (FY 2025-26)",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D06_audited.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D07",
+            "name": "University Affiliation Letter",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D07_university.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Smt. Lakshmi Iyer",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D08",
+            "name": "Structural Stability Certificate",
+            "mandatory": false,
+            "status": "Not Submitted"
+          }
+        ],
+        "submittedOn": "2026-06-30"
+      }
+    },
+    {
+      "id": "APP-01603",
+      "ref": "AICTE/2026/APP/01603",
+      "institutionId": "INS-1-6634",
+      "type": "Extension of Approval (EoA)",
+      "status": "Draft",
+      "createdOn": "2026-10-20",
+      "details": {
+        "programme": "Engineering & Technology",
+        "course": "Diploma in Civil Engineering",
+        "intake": 60,
+        "academicYear": "2026-27",
+        "landArea": 3,
+        "builtUpArea": 2800,
+        "facultyCount": 2,
+        "principal": "Sh. Vikram Rathore",
+        "address": "Plot 17, Sitapura Industrial Area, Jaipur 302022"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Under Review",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12"
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Not Submitted"
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Not Submitted"
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Not Submitted"
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Not Submitted"
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Not Submitted"
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Not Submitted"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-20 12:00",
+          "by": "Sh. Vikram Rathore",
+          "action": "Draft created"
+        }
+      ]
+    },
+    {
+      "id": "APP-01588",
+      "ref": "AICTE/2026/APP/01588",
+      "institutionId": "INS-1-3301",
+      "type": "Extension of Approval (EoA)",
+      "status": "Approved",
+      "createdOn": "2026-08-02",
+      "submittedOn": "2026-08-12",
+      "assignedOfficer": "Sh. Arvind Sharma",
+      "details": {
+        "programme": "Engineering & Technology",
+        "course": "B.Tech Electrical Engineering",
+        "intake": 120,
+        "academicYear": "2026-27",
+        "landArea": 28,
+        "builtUpArea": 24000,
+        "facultyCount": 7,
+        "principal": "Dr. Ramesh Sahu",
+        "address": "Sector 6, Bhilai Nagar, Durg 490006"
+      },
+      "documents": [
+        {
+          "code": "D01",
+          "name": "Land Registration / Lease Deed",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D01_land.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D02",
+          "name": "Building Completion Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D02_building.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D03",
+          "name": "Fire Safety Certificate",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D03_fire.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D04",
+          "name": "Affidavit on Non-Judicial Stamp Paper",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D04_affidavit.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D05",
+          "name": "Faculty List with Qualifications",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D05_faculty.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D06",
+          "name": "Audited Financial Statement (FY 2025-26)",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D06_audited.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D07",
+          "name": "University Affiliation Letter",
+          "mandatory": true,
+          "status": "Verified",
+          "fileName": "D07_university.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        },
+        {
+          "code": "D08",
+          "name": "Structural Stability Certificate",
+          "mandatory": false,
+          "status": "Verified",
+          "fileName": "D08_structural.pdf",
+          "uploadedOn": "2026-09-12",
+          "checkedBy": "Sh. Arvind Sharma",
+          "checkedOn": "2026-10-02",
+          "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+        }
+      ],
+      "decision": {
+        "decision": "Approved",
+        "officer": "Sh. Arvind Sharma",
+        "reason": "Compliant with all applicable norms; physical verification report satisfactory.",
+        "at": "2026-09-10 11:45"
+      },
+      "history": [
+        {
+          "at": "2026-08-12 10:00",
+          "by": "Dr. Ramesh Sahu",
+          "action": "Application submitted"
+        },
+        {
+          "at": "2026-09-10 11:45",
+          "by": "Sh. Arvind Sharma",
+          "action": "Approved",
+          "remark": "Compliant with all applicable norms"
+        }
+      ],
+      "frozen": {
+        "details": {
+          "programme": "Engineering & Technology",
+          "course": "B.Tech Electrical Engineering",
+          "intake": 120,
+          "academicYear": "2026-27",
+          "landArea": 28,
+          "builtUpArea": 24000,
+          "facultyCount": 7,
+          "principal": "Dr. Ramesh Sahu",
+          "address": "Sector 6, Bhilai Nagar, Durg 490006"
+        },
+        "documents": [
+          {
+            "code": "D01",
+            "name": "Land Registration / Lease Deed",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D01_land.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D02",
+            "name": "Building Completion Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D02_building.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D03",
+            "name": "Fire Safety Certificate",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D03_fire.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D04",
+            "name": "Affidavit on Non-Judicial Stamp Paper",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D04_affidavit.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D05",
+            "name": "Faculty List with Qualifications",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D05_faculty.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D06",
+            "name": "Audited Financial Statement (FY 2025-26)",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D06_audited.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D07",
+            "name": "University Affiliation Letter",
+            "mandatory": true,
+            "status": "Verified",
+            "fileName": "D07_university.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          },
+          {
+            "code": "D08",
+            "name": "Structural Stability Certificate",
+            "mandatory": false,
+            "status": "Verified",
+            "fileName": "D08_structural.pdf",
+            "uploadedOn": "2026-09-12",
+            "checkedBy": "Sh. Arvind Sharma",
+            "checkedOn": "2026-10-02",
+            "findings": "Document authenticated against issuing authority records. Seal, signature and registration number match."
+          }
+        ],
+        "submittedOn": "2026-08-12"
+      }
+    }
+  ],
+  "deficiencies": [
+    {
+      "id": "DEF-0912",
+      "appId": "APP-01482",
+      "category": "Infrastructure",
+      "description": "Built-up area stated in the Building Completion Certificate (9,850 sq.m) does not match the area declared in the application (11,800 sq.m). Submit a corrected certificate issued by the competent authority.",
+      "raisedBy": "Sh. Arvind Sharma",
+      "raisedOn": "2026-10-03",
+      "dueOn": "2026-11-02",
+      "status": "Open"
+    },
+    {
+      "id": "DEF-0874",
+      "appId": "APP-01291",
+      "category": "Faculty",
+      "description": "Faculty list indicates 6 full-time faculty against a requirement of 12 for the proposed intake of 240.",
+      "raisedBy": "Smt. Lakshmi Iyer",
+      "raisedOn": "2026-07-12",
+      "dueOn": "2026-08-01",
+      "status": "Closed",
+      "response": "Recruitment of additional faculty is in process.",
+      "respondedOn": "2026-07-30",
+      "closedBy": "Smt. Lakshmi Iyer",
+      "closedOn": "2026-08-04",
+      "closeRemark": "Response not satisfactory; considered in final decision."
+    }
+  ],
+  "notifications": [
+    {
+      "id": "N-1",
+      "at": "2026-10-25",
+      "role": "public",
+      "text": "Approval Process Handbook 2026-27 (Revised) published. Institutions are advised to refer to the revised Clause 5.1 on faculty norms.",
+      "link": "/admin/knowledge"
+    },
+    {
+      "id": "N-2",
+      "at": "2026-10-18",
+      "role": "public",
+      "text": "Last date for submission of applications for Extension of Approval extended to 15 November 2026."
+    },
+    {
+      "id": "N-3",
+      "at": "2026-10-10",
+      "role": "public",
+      "text": "Scheduled maintenance of the portal on 2 November 2026 between 22:00 and 02:00 hrs IST."
+    },
+    {
+      "id": "N-4",
+      "at": "2026-10-03",
+      "role": "institution",
+      "institutionId": "INS-1-4412",
+      "text": "Deficiency Notice DEF-0912 issued against AICTE/2026/APP/01482. Respond by 02 Nov 2026.",
+      "link": "/institution/deficiencies/DEF-0912/respond"
+    },
+    {
+      "id": "N-5",
+      "at": "2026-10-06",
+      "role": "officer",
+      "text": "New application AICTE/2026/APP/01544 received in case queue.",
+      "link": "/officer/cases/APP-01544/overview"
+    }
+  ],
+  "applicationTypes": [
+    {
+      "code": "NEW",
+      "name": "Establishment of New Technical Institution",
+      "desc": "Grant of approval for setting up a new institution offering technical programmes."
+    },
+    {
+      "code": "EOA",
+      "name": "Extension of Approval (EoA)",
+      "desc": "Continuation of approval for an existing institution for the next academic year."
+    },
+    {
+      "code": "INT",
+      "name": "Increase in Intake",
+      "desc": "Enhancement of approved intake in an existing course."
+    },
+    {
+      "code": "NCR",
+      "name": "Introduction of New Course",
+      "desc": "Addition of a new course or programme in an existing institution."
+    },
+    {
+      "code": "CLO",
+      "name": "Closure of Course / Institution",
+      "desc": "Progressive or complete closure of programmes."
+    }
+  ],
+  "documents": [
+    {
+      "code": "D01",
+      "name": "Land Registration / Lease Deed",
+      "mandatory": true
+    },
+    {
+      "code": "D02",
+      "name": "Building Completion Certificate",
+      "mandatory": true
+    },
+    {
+      "code": "D03",
+      "name": "Fire Safety Certificate",
+      "mandatory": true
+    },
+    {
+      "code": "D04",
+      "name": "Affidavit on Non-Judicial Stamp Paper",
+      "mandatory": true
+    },
+    {
+      "code": "D05",
+      "name": "Faculty List with Qualifications",
+      "mandatory": true
+    },
+    {
+      "code": "D06",
+      "name": "Audited Financial Statement (FY 2025-26)",
+      "mandatory": true
+    },
+    {
+      "code": "D07",
+      "name": "University Affiliation Letter",
+      "mandatory": true
+    },
+    {
+      "code": "D08",
+      "name": "Structural Stability Certificate",
+      "mandatory": false
+    }
+  ]
+}

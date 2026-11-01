@@ -1,0 +1,58 @@
+{
+  "LAND_REGISTRATION": [
+    "Land Registration / Registered Lease Deed",
+    "Upload the registered ownership deed or valid registered lease for the campus. Include the institution or sponsoring body's name, survey numbers, land area and registration details."
+  ],
+  "COMPLETION": [
+    "Building Completion / Occupancy Certificate",
+    "Upload the completion or occupancy certificate issued by the competent local authority. The campus address, approved building use and certified built-up area must be readable."
+  ],
+  "FIRE_SAFETY": [
+    "Valid Fire Safety Certificate",
+    "Upload the current certificate from the fire authority showing the campus address, certificate number, issue date and validity or expiry date."
+  ],
+  "AFFIDAVIT_2": [
+    "Affidavit 2 — Institutional Declaration",
+    "Upload the signed and notarized Affidavit 2 in the applicable AICTE format on the prescribed stamp or e-stamp paper, including all pages and the authorized signatory's details."
+  ],
+  "FACULTY_LIST": [
+    "Faculty List with Qualifications",
+    "Upload the programme-wise faculty list showing names, designations, qualifications, specialization, appointment dates and relevant supporting qualification records."
+  ],
+  "AUDITED_ACCOUNTS": [
+    "Audited Financial Statements — Previous Financial Year",
+    "Upload the previous financial year's audited balance sheet, income and expenditure statement, and auditor's report for the sponsoring Trust, Society or Company."
+  ],
+  "AFFILIATION": [
+    "University / Board Affiliation Letter",
+    "Upload the current affiliation or consent letter identifying the institution, programmes, courses, approved intake and academic year."
+  ],
+  "STRUCTURAL_STABILITY": [
+    "Structural Stability Certificate",
+    "Upload the certificate from a qualified structural engineer identifying the buildings assessed, inspection date and assessment. The generated checklist explains when it is required."
+  ],
+  "AFFIDAVIT_7": [
+    "Affidavit 7 — Joint Land-Lease Undertaking",
+    "For a leased-land new-institution proposal, upload the joint undertaking by the parties in the applicable format. Include the lease term, campus land details and signatures."
+  ],
+  "AFFIDAVIT_8": [
+    "Affidavit 8 — Intake / Additional-Course Declaration",
+    "Upload the signed and notarized Affidavit 8 for the intake or additional-course request, where applicable. Extended EoA exemptions are evaluated separately."
+  ],
+  "FORMAT_3": [
+    "Format 3 — Governing Body Resolution",
+    "Upload the Trust, Society or Company's resolution authorizing the proposed additional course or intake and the associated provision of land, building and funds."
+  ],
+  "CLOSURE_RESOLUTION": [
+    "Closure Resolution and Student Protection Plan",
+    "Upload the governing body's resolution, reasons for closure, the proposed schedule, and arrangements to protect current students and retain their academic records."
+  ],
+  "SATELLITE_MAP": [
+    "Campus Satellite Map and Entrance Coordinates",
+    "Upload a map identifying the campus boundary and main entrance, with clear latitude and longitude coordinates."
+  ],
+  "PAYMENT_RECEIPT": [
+    "Applicable AICTE Payment Receipt",
+    "Upload the payment acknowledgment for this application year, showing the application reference, transaction number, date and amount."
+  ]
+}

@@ -1,0 +1,167 @@
+[
+  {
+    "id": "S01",
+    "path": "/",
+    "title": "Public entry"
+  },
+  {
+    "id": "S02",
+    "path": "/login",
+    "title": "Unified login"
+  },
+  {
+    "id": "S03",
+    "path": "/reset-password",
+    "title": "Password recovery"
+  },
+  {
+    "id": "S04",
+    "path": "/notifications",
+    "title": "Scoped notifications"
+  },
+  {
+    "id": "S05",
+    "path": "/settings",
+    "title": "Account and preferences"
+  },
+  {
+    "id": "I01",
+    "path": "/institution/dashboard",
+    "title": "Institution overview"
+  },
+  {
+    "id": "I02",
+    "path": "/institution/applications",
+    "title": "Own applications"
+  },
+  {
+    "id": "I03",
+    "path": "/institution/applications/new",
+    "title": "Category/year selection"
+  },
+  {
+    "id": "I04",
+    "path": "/institution/applications/:id/details",
+    "title": "Institution/request details"
+  },
+  {
+    "id": "I05",
+    "path": "/institution/applications/:id/checklist",
+    "title": "Dynamic checklist"
+  },
+  {
+    "id": "I06",
+    "path": "/institution/applications/:id/documents",
+    "title": "Uploads and versions"
+  },
+  {
+    "id": "I07",
+    "path": "/institution/applications/:id/validation",
+    "title": "Pre-submission validation"
+  },
+  {
+    "id": "I08",
+    "path": "/institution/applications/:id/review-submit",
+    "title": "Review and submit"
+  },
+  {
+    "id": "I09",
+    "path": "/institution/applications/:id/status",
+    "title": "Publishable status"
+  },
+  {
+    "id": "I10",
+    "path": "/institution/history",
+    "title": "Approved-history timeline"
+  },
+  {
+    "id": "I11",
+    "path": "/institution/history/:recordId",
+    "title": "Historical snapshot"
+  },
+  {
+    "id": "I12",
+    "path": "/institution/deficiencies",
+    "title": "Clarification inbox"
+  },
+  {
+    "id": "I13",
+    "path": "/institution/deficiencies/:requestId",
+    "title": "Clarification response"
+  },
+  {
+    "id": "O01",
+    "path": "/officer/dashboard",
+    "title": "Assigned workload"
+  },
+  {
+    "id": "O02",
+    "path": "/officer/applications",
+    "title": "Case queue"
+  },
+  {
+    "id": "O03",
+    "path": "/officer/applications/:id/overview",
+    "title": "Case overview"
+  },
+  {
+    "id": "O04",
+    "path": "/officer/applications/:id/evidence",
+    "title": "Document/evidence viewer"
+  },
+  {
+    "id": "O05",
+    "path": "/officer/applications/:id/authenticity",
+    "title": "Source/provenance checks"
+  },
+  {
+    "id": "O06",
+    "path": "/officer/applications/:id/compliance",
+    "title": "Regulatory review"
+  },
+  {
+    "id": "O07",
+    "path": "/officer/applications/:id/inspection",
+    "title": "Infrastructure/inspection"
+  },
+  {
+    "id": "O08",
+    "path": "/officer/applications/:id/review",
+    "title": "Human review/actions"
+  },
+  {
+    "id": "O09",
+    "path": "/officer/verifications",
+    "title": "Verification tasks"
+  },
+  {
+    "id": "O10",
+    "path": "/officer/reports",
+    "title": "Report/export library"
+  },
+  {
+    "id": "A01",
+    "path": "/admin/users-roles",
+    "title": "Access management"
+  },
+  {
+    "id": "A02",
+    "path": "/admin/rules",
+    "title": "Versioned rule library"
+  },
+  {
+    "id": "A03",
+    "path": "/admin/integrations",
+    "title": "Connector health/mode"
+  },
+  {
+    "id": "A04",
+    "path": "/admin/audit",
+    "title": "Governance audit"
+  },
+  {
+    "id": "A05",
+    "path": "/admin/knowledge",
+    "title": "Approved knowledge sources"
+  }
+]

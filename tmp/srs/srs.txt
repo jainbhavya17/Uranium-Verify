@@ -1,0 +1,3294 @@
+=== PAGE 1 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  1
+SMART INDIA HACKATHON 2026  /  TEAM URANIUM
+URANIUM VERIFY
+Software Requirements Specification (SRS) & UI/UX Navigation Blueprint
+AI-Powered Application Validation, Document Authentication and Regulatory Compliance Verification
+Problem Statement: SIH26261   |   Organization: AICTE   |   Release: MVP + production-ready interface contracts
+Version 1.1  •  26 October 2026  •  Working implementation specification
+DOCUMENT CONTROL
+BASELINE
+Purpose
+Define what to build, who can access it, how pages connect, 
+which services operate behind them, and how the MVP is 
+accepted.
+Navigation footprint
+33 distinct page templates: 5 shared/public + 13 institution + 10 
+AICTE officer + 5 administrator.
+AICTE rules
+Official-source governed. Requirement values, per-type 
+checklists, due stages and exceptions are versioned, never 
+invented by the model.
+Prototype mode
+Synthetic institutions, synthetic certificates and explicitly 
+labelled mock authority responses; real integrations require 
+approved access.
+Primary users
+Institution submitter/admin; AICTE scrutiny officer, verification 
+specialist, supervisor; platform administrator and auditor.
+Status
+Baseline for UX wireframes, Figma, Codex implementation, API 
+contracts and test planning; subject to stakeholder approval.
+Design principle: ONE PURPOSE PER PAGE, ONE TRACEABLE FINDING PER CLAIM, NO BLACK-BOX 
+APPROVAL.
+Source hierarchy: the user-confirmed 14 feature requirements and URANIUM VERIFY v1.1 blueprint define 
+product intent. AICTE APH and verified amendments govern regulatory content. This SRS marks assumptions, 
+synthetic thresholds, staged features, and external dependencies explicitly.
+
+
+=== PAGE 2 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  2
+Contents and reading guide
+1. Executive summary, boundaries and assumptions
+2. Stakeholders and role-based authorization
+3. Information architecture, navigation and route count
+4. UI design system, accessibility and responsive behavior
+5. Shared and public page specifications (5)
+6. Institution page specifications (13)
+7. AICTE officer page specifications (10)
+8. Administrator page specifications (5)
+9. End-to-end user journeys and state transitions
+10. Functional requirements and 14-feature mapping
+11. Upload validation, document quality and error recovery
+12. Detailed logical and deployment architecture
+13. AI, OCR, RAG, provenance and regulatory execution
+14. Canonical data model and evidence lineage
+15. REST API and notifications contract
+16. Security, privacy and non-functional requirements
+17. MVP scope, synthetic cases and acceptance tests
+18. Feature-page-service traceability matrix
+19. Codex / UI coding implementation brief
+20. References, source gaps and change control
+21. AICTE APH: application catalogue, document rules and field-level specification
+Route IDs count unique page templates, not separate URLs created for every institution, application or document ID. Modals, 
+drawers, tabs and validation banners do not count as distinct pages unless separately routed.
+
+
+=== PAGE 3 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  3
+1. Executive summary, boundaries and assumptions
+URANIUM VERIFY is a human-controlled preliminary scrutiny and regulatory decision-support layer for AICTE 
+approval workflows. Institutions identify an applicable application category, review existing authorized 
+institutional history, supply forms and supporting evidence, receive permissible pre-submission deficiency 
+guidance and submit a case. AICTE personnel receive a separate protected workspace to review document 
+extraction, cross-record consistency, issuer responses, infrastructure evidence, regulatory checks, provenance 
+signals and traceable reports.
+1.1 Scope and goals
+
+Cover all 14 agreed feature groups within the prototype through functional vertical slices or clearly 
+identified limited-scope demonstrations.
+
+Preserve authorized institute history by academic year, application type, programme and approved intake; 
+never overwrite an approved snapshot with a pending request.
+
+Implement institutional document-upload constraints before expensive extraction; distinguish readable, 
+marginal-quality, unsupported, infected/suspicious and manually reviewable files.
+
+Allow only authorized AICTE roles to view internal risk prioritization, forensic analysis, private source 
+responses and review actions.
+
+Expose evidence-backed findings referencing the exact document/page/field or trusted data source, and the 
+applicable rule version.
+
+Keep source-adapter interfaces replaceable: mock registry now; approved issuing-authority/AICTE systems 
+in production.
+1.2 In scope vs excluded authority
+IN SCOPE
+OUT OF SCOPE OR CONTROLLED DEPENDENCY
+EoA-first guided submission; conditional checklist; history 
+timeline; institution deficiency rectification
+Not rebuilding the entire AICTE production ERP/portal or 
+claiming access without written authorization
+Officer review queue; evidence viewer; rule-based checks; audit 
+history; reports
+No AI auto-approval/rejection, legal adjudication or final 
+inspection decision
+Digital PDF/scans; selected extraction schemas; baseline 
+forensic/provenance verification
+No universal forgery detection or claim that all AI images 
+contain readable SynthID
+Curated APH source material; limited RAG and policy-version 
+filter
+No unsupervised LLM invention of eligibility rules, numerical 
+thresholds or exceptions
+MVP synthetic records, demo identities and sample issuer 
+registry
+No production personal/college documents sent to external 
+models without consent, authorization and agreements
+1.3 Assumptions register
+ID
+ASSUMPTION / OPEN POINT
+HANDLING
+A-01
+APH 2024-27 is the starting source, 
+subject to applicable circulars and 
+modifications.
+Version every rule; require approved 
+source citation before enabling.
+A-02
+Exact current AICTE portal form schema 
+is not available to the team.
+Proposed fields labelled MVP; real 
+mapping adapter TBD.
+A-03
+Issuer verification APIs and AICTE 
+internal database access require 
+permissions.
+Mock adapters + provider registry, 
+separate mock badge.
+A-04
+Specific file-size, resolution and OCR-
+confidence policies not fully specified by 
+AICTE.
+Use documented configurable demo 
+defaults; do not label as AICTE mandated.
+
+
+=== PAGE 4 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  4
+ID
+ASSUMPTION / OPEN POINT
+HANDLING
+A-05
+Government processing workflows vary 
+across application types and years.
+Configurable submission and deficiency 
+states rather than hard-coded universal 
+flow.
+A-06
+Some authenticity checks require 
+external provider support and feature 
+access.
+Expose not-supported/unavailable 
+separately from verified result.
+2. Stakeholders and role-based authorization
+Authorization is enforced by the backend on every object, not merely by hiding tabs. Institution members see 
+only their institution and authorized applications. AICTE personnel receive capabilities by office role, assigned 
+cases, jurisdiction and data sensitivity.
+ROLE
+MINIMUM PERMISSIONS
+R0 Visitor
+Public landing and sign in; no sensitive content.
+R1 Institution Submitter
+Create and edit assigned institution draft; upload documents; 
+run precheck; submit if granted permission.
+R2 Institution Admin
+R1 + manage own institution users; confirm final 
+submission/rectification; view institution history.
+R3 Scrutiny Officer
+View assigned queue; findings and evidence; request 
+clarification; record observations and recommendation.
+R4 Verification Specialist
+View cases routed for authenticity/infrastructure verification; 
+update source and inspection evidence, not approve.
+R5 Supervisor
+Cross-case oversight and reassignment; review escalations; sign 
+off permitted workflow actions.
+R6 Platform/Rule Admin
+Manage roles, published rules, adapter health and knowledge 
+indexes; no routine content access unless separately granted.
+R7 Auditor (read-only)
+Access filtered audit and approved reports; no editing or 
+decision privileges.
+2.1 Permission matrix (deny by default)
+OPERATION
+INST. USER
+OFFICER
+SPECIALIST
+SUPERVISOR
+ADMIN
+View own 
+institution 
+applications
+Own only
+Assigned
+Routed
+Authorized
+Metadata only
+Create/edit 
+application draft
+Yes
+No
+No
+No
+No
+Run institution 
+precheck
+Yes
+Read
+No
+No
+No
+Official risk / 
+forensic detail
+No
+Assigned
+Routed
+Assigned
+Admin-defined
+Request 
+deficiency / 
+clarification
+Receive
+Create
+Suggest
+Approve workflow
+No
+Record source 
+verification
+View summary
+Request
+Update
+Review
+Configure adapter
+Review or 
+recommendation
+No
+Yes
+Evidence only
+Escalate/approve 
+step
+No
+
+
+=== PAGE 5 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  5
+OPERATION
+INST. USER
+OFFICER
+SPECIALIST
+SUPERVISOR
+ADMIN
+Publish APH rule 
+versions
+No
+Read
+Read
+Review
+Controlled dual 
+approval
+User/role 
+management
+Own members*
+No
+No
+Scoped
+Global admin
+System-wide audit
+Own submission 
+timeline
+Own activity
+Own activity
+Oversight
+Metadata + auditor
+*Institution membership management is optional in the MVP. MFA, per-case assignment and detailed public-service role 
+mapping require production identity/permission design. Administrative access never bypasses audit.
+2.2 Information separation
+
+Institution sees readiness, completeness, expiry, factual mismatches, rectification requests, official status 
+and its own prior approved history. It does not see internal fraud heuristics, undisclosed model scores, 
+officer private notes or other institutions.
+
+Officer sees full authorized case evidence, source responses, confidence/limitations, regulatory clauses, risk 
+reasons and review controls.
+
+Specialist sees only routed verification tasks; supervisor sees assigned operational oversight; platform 
+admin sees rule/connector administration rather than unbounded document contents.
+
+Shared account pages (notifications and settings) use the signed-in role and tenant scope; notifications are 
+not an alternative authorization channel.
+3. Information architecture, navigation and route count
+The interface uses 33 unique route templates: 5 shared/public, 13 institution, 10 officer, and 5 administrator. 
+Dynamic parameters (:id, :recordId, :requestId) produce instance URLs, not more page types. This is the baseline 
+used to estimate wireframes, routes, test cases and development work.
+SPACE
+COUNT
+PRIMARY NAVIGATION
+PAGE IDS
+Shared/public
+5
+Home; login; password 
+recovery; notifications; 
+profile/settings
+S01-S05
+Institution
+13
+Overview; Applications; 
+Institutional History; 
+Deficiencies
+I01-I13
+AICTE officer
+10
+Overview; Case Queue; 
+Verification Queue; Reports
+O01-O10
+Administration
+5
+User Roles; Rule Library; 
+Connectors; Audit; Knowledge 
+Base
+A01-A05
+TOTAL
+33
+No all-in-one dashboard: each 
+page has a single primary 
+purpose
+5+13+10+5=33
+3.1 Shared navigation conventions
+
+Desktop: fixed-width sidebar with 4-6 top-level items per persona, top bar with role/institution switch-
+context when authorized, notification icon, breadcrumb and profile menu.
+
+Institution application creation uses a six-step progress navigator (type, details, checklist, uploads, 
+precheck, review/submit); user can return to completed steps without losing data.
+
+Officer case review uses an application context header and six case tabs routed to separate pages: 
+Overview, Evidence, Authenticity, Compliance, Inspection, Review.
+
+
+=== PAGE 6 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  6
+
+Search and filters stay on list pages, while deep investigation occurs on a dedicated detail page.
+
+Every list row links to a detail page; any PDF evidence opens in a split-view document viewer with 
+page/field highlights; URLs support back/forward navigation.
+3.2 Route-to-route map
+Figure 1. Primary route relationships. Dashed arrows represent controlled cross-role workflow events, not direct navigation 
+permissions.
+3.3 URL and navigation contracts
+
+A route requires an authenticated principal unless it is Home, Login or Password Recovery. Invalid access 
+returns a safe 403/404 state without leaking case existence.
+
+Each application has a stable opaque ID; URLs contain opaque identifiers, never certificate data or personal 
+information.
+
+Use a consistent case breadcrumb: Applications > {Application ID} > {Section}; on mobile use a compact 
+back link plus section selector.
+
+Navigation disabled pending sufficient permissions, but backend always independently re-checks RBAC, 
+institutional membership and case assignment.
+4. UI design system, accessibility and responsive behavior
+Design objective: a calm, precise public-administration SaaS interface. Treat data credibility as more important 
+than decorative effects. The interface must work for low-bandwidth users, keyboard-only users and officers 
+handling dense evidence.
+DESIGN AREA
+REQUIRED SPECIFICATION
+Color and tone
+Deep navy for headers/text; muted teal as primary interactive 
+accent; slate neutrals and white surfaces. Semantic colors 
+reserved for errors, warnings, success and pending status. 
+Never rely on color alone.
+
+
+=== PAGE 7 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  7
+DESIGN AREA
+REQUIRED SPECIFICATION
+Typography
+Inter, Aptos or system sans-serif; 16px body default, 12-14px 
+metadata, 24-30px page titles; line height >=1.45. Clear visible 
+field labels.
+Spacing / layout
+8px spacing system; 12-column responsive layout; max width 
+1280px; cards with restrained borders, not excessive shadows. 
+Maintain consistent content margins.
+Navigation
+Stable sidebar and top bar; breadcrumb; active page state; per-
+page title and one prominent primary action. Never display 14 
+modules as 14 equal cards on one screen.
+Forms
+Single-column form sections when detailed; sticky Save Draft; 
+inline errors; explicit required/conditional/optional labels; 
+autosave with last saved time.
+Feedback
+Inline validation banners; upload progress and queue status; 
+toast for reversible actions; confirm modal for irreversible 
+submission; service-unavailable fallback.
+Tables
+Sortable/searchable; filters shown explicitly; sticky table 
+header; mobile stacked detail rows; pagination and keyboard 
+focus.
+Accessibility
+Target WCAG 2.2 AA: contrast, meaningful focus outlines, 
+proper labels, headings, skip link, error summaries, keyboard 
+operations, accessible uploads and status announcements.
+Responsive
+Desktop 1440/1280, tablet 768, mobile 375/390 reference sizes. 
+Sidebar becomes drawer; key case actions stay reachable.
+Sensitive data
+Masks where appropriate; no raw access tokens; only 
+authorized preview/exports; warning when sample/demo data 
+is displayed.
+4.1 Common reusable components
+
+AppShell, PersonaSidebar, Topbar, GlobalSearch, NotificationBell, Breadcrumbs, PageHeader, 
+ContextBanner, StatusBadge, EvidenceReference.
+
+ApplicationStatusTimeline, Stepper, RequirementRow, DocumentUploadCard, DocumentQualityChecklist, 
+InlineFieldComparison, DiscrepancyCard.
+
+DataTable, FilterBar, DateRange, EmptyState, ErrorState, SkeletonLoader, ReadOnlyAuditTimeline, 
+ConfirmSubmitDialog.
+
+DocumentViewer with page navigation and bounding-box highlights; SourceVerificationPanel; 
+RuleCitationPopover; AssignmentSelector (authorized roles only).
+4.2 UX behavior rules
+
+Each user-facing action has an explicit pending/success/failure state. No fake successes for asynchronous 
+OCR or source confirmation.
+
+Persist uploaded-file progress separately from extraction status; enable draft autosave and recovery after 
+refresh.
+
+Do not block an institution solely because an AI model detects possible image manipulation; route that 
+concern to authorized review.
+
+Use terms: Draft, Submitted, Under Preliminary Review, Clarification Requested, Pending Source 
+Verification, Referred for Inspection, Review Completed; do not label automated output Approved/Rejected.
+
+Support a reduced-motion setting, native form autocomplete where safe, proper focus trapping in dialogs, 
+and screen-reader status updates.
+
+
+=== PAGE 8 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  8
+5. Shared and public page specifications (5)
+Shared templates are role-neutral at route level; their content is scoped by the authenticated session. Landing, 
+login and recovery are public; notifications and settings require sign-in.
+Individual page contracts
+S01  |  Home / Product Entry  (4 sub-features)
+Route  /   •   Audience: Visitor   •   Priority: MVP
+Page content  Public service introduction, boundaries and consent/data-use notice.
+Sub-features  1. Product purpose and flow overview; 2. Institution versus officer pathways; 3. Accessibility/help 
+link; 4. Sign-in primary action
+Navigation  Login S02; help/support external or inline.
+Backend / tech  Static React route; content management optional.
+UI states  Public, loading, unavailable.
+S02  |  Unified Login  (5 sub-features)
+Route  /login   •   Audience: All   •   Priority: MVP
+Page content  Login form with organization, account type shown only as informative; actual role from identity 
+claims.
+Sub-features  1. Credentials / configured identity provider; 2. Recover password; 3. Session and authorization 
+error feedback; 4. Role-resolved redirect; 5. Demo-mode login labels
+Navigation  After login I01, O01 or A01; recovery S03.
+Backend / tech  Supabase Auth or OIDC adapter; JWT validation; RBAC server checks.
+UI states  Idle, submitting, wrong credentials, locked, MFA-needed.
+S03  |  Password Recovery  (4 sub-features)
+Route  /reset-password   •   Audience: All   •   Priority: MVP
+Page content  Recovery request and no-account-enumeration confirmation.
+Sub-features  1. Enter registered email; 2. Request reset link; 3. Secure token confirmation; 4. Password rules 
+and feedback
+Navigation  S02 login; S05 for authenticated password changes.
+Backend / tech  Auth provider; rate limiting, expiring tokens and generic response.
+UI states  Requested, invalid/expired token, success, service error.
+S04  |  Notification Center  (5 sub-features)
+Route  /notifications   •   Audience: All authenticated   •   Priority: MVP
+Page content  Chronological updates, type, timestamp, application label, actionable link.
+Sub-features  1. Unread/read tabs; 2. Filter by event type and application; 3. Mark read / mark all read; 4. Deep 
+links to authorized records; 5. Notification delivery status
+Navigation  I09/I13 for institution; O03/O09 for officer; A03/A04 for admin.
+Backend / tech  Notifications DB + event dispatcher; permission-aware links; in-app MVP.
+UI states  Empty, unread, read, stale target, forbidden.
+S05  |  My Account & Preferences  (5 sub-features)
+Route  /settings   •   Audience: All authenticated   •   Priority: MVP
+Page content  User account with active role, organization, device/session info and settings.
+Sub-features  1. View/update permitted profile; 2. Password/session management; 3. Notification preferences; 4. 
+Accessibility preferences; 5. View own role and linked organization
+Navigation  Return to previous role dashboard; logout to S02.
+
+
+=== PAGE 9 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  9
+Backend / tech  Auth + profile service; audit security-sensitive edits.
+UI states  Saved, conflict, forbidden, session expired.
+6. Institution page specifications (13)
+Institution sidebar: Overview, Applications, Institution History, Deficiencies. Notifications and Account belong 
+to shared top bar. Application creation is a deliberate multi-page wizard rather than a single long form. Only a 
+submitting institution admin can finalize submission if role policy requires it.
+Individual page contracts
+I01  |  Institution Dashboard  (5 sub-features)
+Route  /institution/dashboard   •   Audience: R1/R2   •   Priority: MVP
+Page content  Own institution name and Permanent ID (verified/synthetic badge), EoA overview, drafts, 
+submitted cases and official updates.
+Sub-features  1. Current application summary cards; 2. Recent activity and due items; 3. Contextual pending 
+corrections; 4. Start new application action; 5. Last approved snapshot preview
+Navigation  Applications I02; new I03; history I10; deficiencies I12; notifications S04.
+Backend / tech  Dashboard aggregates + institution history + scoped notification counts.
+UI states  No application, draft exists, awaiting officer, clarification requested.
+I02  |  My Applications  (5 sub-features)
+Route  /institution/applications   •   Audience: R1/R2   •   Priority: MVP
+Page content  Paginated case list: app ID, year, category, updated date, submission status.
+Sub-features  1. Search and year/type filters; 2. Status and due date chips; 3. Draft/resume actions; 4. 
+Application details links; 5. Create new application
+Navigation  New I03; resume I04-I08; submitted I09.
+Backend / tech  GET applications scoped by institution membership; PostgreSQL pagination.
+UI states  Empty, filtering, draft/submitted, no access.
+I03  |  Choose Application Type  (5 sub-features)
+Route  /institution/applications/new   •   Audience: R1/R2   •   Priority: MVP
+Page content  Explain routine EoA, intake increase, new course and other categories; unsupported categories 
+labelled future/limited demo.
+Sub-features  1. Academic year selection; 2. Application category cards; 3. APH applicability preview; 4. 
+Readiness/prerequisite check; 5. Create draft
+Navigation  Create draft -> I04; cancel -> I02.
+Backend / tech  Application creation service + versioned category catalog and due-stage rules.
+UI states  Unsupported category, year closed, duplicate draft warning.
+I04  |  Institution & Request Details  (6 sub-features)
+Route  /institution/applications/:id/details   •   Audience: R1/R2   •   Priority: MVP
+Page content  Institution identity, profile snapshot, affiliation, course/intake proposals, authorised signatory; 
+clear approved vs proposed labels.
+Sub-features  1. Prefill verified historical institution fields; 2. Edit request-specific details; 3. Show past-vs-
+requested changes; 4. Course/intake rows when relevant; 5. Autosave and error summary; 6. Next-stage 
+navigation
+Navigation  Back I03 or I02; forward I05; history I11 via safe side link.
+Backend / tech  Institution records + draft payload validation + history reconciliation API.
+UI states  Unsaved, saved, conflict, review needed, source pending.
+
+
+=== PAGE 10 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  10
+I05  |  Dynamic Document Checklist  (5 sub-features)
+Route  /institution/applications/:id/checklist   •   Audience: R1/R2   •   Priority: MVP
+Page content  Checklist from APH-versioned rules, document purpose and stage, with related applicant details.
+Sub-features  1. Requirement categories; 2. Required/conditional/NA/not-due flags; 3. Document guidance and 
+source link; 4. Completion progress by category; 5. Stage-specific exceptions
+Navigation  Proceed to I06; details I04; regulation citation optional drawer.
+Backend / tech  Requirement service + approved APH rule-set; stage conditions and exceptions.
+UI states  Pending document, conditional, not yet due, rule not resolved.
+I06  |  Documents & Uploads  (6 sub-features)
+Route  /institution/applications/:id/documents   •   Audience: R1/R2   •   Priority: MVP
+Page content  One requirement per document card, filename, version, preview, quality and extracted-status 
+chips; drag/drop plus keyboard upload.
+Sub-features  1. Upload PDF/PNG/JPEG with explicit constraints; 2. File preview and progress; 3. Client-side 
+quality hints; 4. Server scan/readability result; 5. Replace/version/retry upload; 6. Document-type tagging
+Navigation  Back checklist I05; precheck I07; clicking document opens inline preview overlay.
+Backend / tech  Upload API, object storage, MIME/magic inspection, AV sandbox, PyMuPDF, Pillow/OpenCV, 
+worker enqueue.
+UI states  Rejected type/size, corrupted, encrypted, low-resolution, scanning, parsed.
+I07  |  Pre-Submission Validation  (6 sub-features)
+Route  /institution/applications/:id/validation   •   Audience: R1/R2   •   Priority: MVP
+Page content  Institution-safe actionable deficiencies, not private fraud classifications or officer notes; separates 
+blocking and advisory checks.
+Sub-features  1. Missing evidence checklist; 2. Field-level mismatch summary; 3. Expiry and due-stage checks; 4. 
+Readable-document remediation tips; 5. Re-run check on updated files; 6. Source-linked issue details
+Navigation  Fix documents I06, details I04; ready -> I08.
+Backend / tech  Deterministic precheck engine; normalized fields; authorized rule version; findings filtered by 
+visibility.
+UI states  Checking, ready, deficiencies, incomplete extraction, no applicable rule.
+I08  |  Review & Submit  (5 sub-features)
+Route  /institution/applications/:id/review-submit   •   Audience: R1/R2   •   Priority: MVP
+Page content  Final review, mandatory declarations (configurable), list of unresolved issues and permitted 
+submission guardrails.
+Sub-features  1. Application summary by section; 2. Upload receipt and field confirmation; 3. Readiness 
+checklist and declarations; 4. Submission lock/confirmation; 5. Download submission acknowledgment
+Navigation  Edit I04/I06/I07; submit -> I09.
+Backend / tech  Transactionally freeze submission revision, snapshot manifest, emit case-submitted event and 
+audit.
+UI states  Ready, submission blocked by objective requirement, submitted, duplicate click/retry.
+I09  |  Application Status & Updates  (6 sub-features)
+Route  /institution/applications/:id/status   •   Audience: R1/R2   •   Priority: MVP
+Page content  No internal risk score; current stage, officer-authored communication, actions and submitted 
+document version.
+Sub-features  1. Status timeline and updated timestamp; 2. Submission acknowledgment; 3. Public-to-institution 
+review messages; 4. Pending external verification summary; 5. Clarification request action; 6. Download 
+permitted report
+Navigation  Corrections I13 when requested; history I10; apps I02.
+
+
+=== PAGE 11 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  11
+Backend / tech  Application state machine + scoped review messages + reports; polling/event refresh.
+UI states  Submitted, in review, clarification, pending source, closed.
+I10  |  Institution History Timeline  (6 sub-features)
+Route  /institution/history   •   Audience: R1/R2   •   Priority: MVP
+Page content  Immutable approved records clearly differentiated from submitted or disputed claims and mock 
+data.
+Sub-features  1. Year-wise approved snapshot timeline; 2. Previous EoA / approval records; 3. Course/intake 
+history table; 4. Prior deficiencies and corrective actions; 5. Authorized baseline marker; 6. Compare two years
+Navigation  Record detail I11; dashboard I01; current draft I04.
+Backend / tech  Institution snapshots, prior approvals, optional authorized AICTE sync adapter.
+UI states  No history, incomplete import, mock history, access denied.
+I11  |  Historical Record Detail  (5 sub-features)
+Route  /institution/history/:recordId   •   Audience: R1/R2   •   Priority: MVP
+Page content  Read-only official/synthetic snapshot, effective year, provenance and change log.
+Sub-features  1. Approval letter / reference preview; 2. Approved courses and intake; 3. Recorded institutional 
+change history; 4. Evidence and source attribution; 5. Diff against selected current application
+Navigation  Return I10; selected draft I04 or I09.
+Backend / tech  Read-only snapshot service; time-aware comparison; authorized document reader.
+UI states  Authoritative, synthetic, unverified import, document unavailable.
+I12  |  Deficiency & Clarification Inbox  (5 sub-features)
+Route  /institution/deficiencies   •   Audience: R1/R2   •   Priority: MVP
+Page content  Officer-published requests that the institution can act on; excludes internal raw fraud detections.
+Sub-features  1. Open/closed request filters; 2. Due date and severity; 3. Linked application; 4. Request 
+summary and officer text; 5. Open rectification flow
+Navigation  Open I13; view related I09.
+Backend / tech  Rectification requests, institution-scoped status, notifications.
+UI states  Open, due soon, submitted, overdue, resolved.
+I13  |  Respond to Deficiency  (6 sub-features)
+Route  /institution/deficiencies/:requestId   •   Audience: R1/R2   •   Priority: MVP
+Page content  Focused form scoped to officer request and allowed remediation window; immutable original 
+submission retained.
+Sub-features  1. Read exact clarification request; 2. Upload corrected/versioned document; 3. Add institution 
+explanation; 4. Compare prior/new document; 5. Send response and receipt; 6. Response history
+Navigation  Back I12; view full status I09; optionally documents I06 with guarded route.
+Backend / tech  Versioned attachments + response service + workflow event + audit.
+UI states  Draft response, submitted response, cutoff passed, request closed.
+7. AICTE officer page specifications (10)
+Officer sidebar: Overview, Application Queue, Verification Tasks, Reports; individual applications contain six 
+separately routed review pages. Internal source authentication, image provenance and prioritization results are 
+not institution-facing. Every final action is explicitly attributed to an authorized reviewer.
+
+
+=== PAGE 12 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  12
+Individual page contracts
+O01  |  Officer Dashboard  (5 sub-features)
+Route  /officer/dashboard   •   Audience: R3/R4/R5   •   Priority: MVP
+Page content  Overview for assigned cases only, with distinguishable incomplete, verification pending and 
+discrepancy states.
+Sub-features  1. Assigned case workload; 2. Pending verification counts; 3. Risk/review priority distribution; 4. 
+Due date and escalation counters; 5. Recent actions and alerts
+Navigation  Queue O02; verification tasks O09; reports O10.
+Backend / tech  Dashboard aggregation + assignments + event stream.
+UI states  No assigned cases, refresh pending, partial data.
+O02  |  Application Queue  (5 sub-features)
+Route  /officer/applications   •   Audience: R3/R5   •   Priority: MVP
+Page content  Paginated case list with institution ID, application ID, category, status, unread findings and 
+assigned officer.
+Sub-features  1. Search/filter by year/category/status; 2. Sortable case priority with reasons; 3. 
+Assignment/workload labels; 4. Bulk safe triage actions; 5. Open assigned case
+Navigation  Open O03; dashboard O01.
+Backend / tech  Case query RBAC + priority engine + assignment records.
+UI states  Unassigned (supervisor only), under review, stale state.
+O03  |  Case Overview  (6 sub-features)
+Route  /officer/applications/:id/overview   •   Audience: R3/R5   •   Priority: MVP
+Page content  One-page triage summary, not a substitute for evidence and rule pages.
+Sub-features  1. Case identity and requested change; 2. Historical approved vs requested values; 3. Verification 
+progress by service; 4. Findings summary and drill-down; 5. Assignment and stage timeline; 6. Officer-only 
+context notices
+Navigation  Evidence O04; authenticity O05; compliance O06; inspection O07; review O08.
+Backend / tech  Case orchestration API + history + normalized statuses.
+UI states  Processing, partial, ready for review, source unavailable.
+O04  |  Evidence & Document Viewer  (6 sub-features)
+Route  /officer/applications/:id/evidence   •   Audience: R3/R4/R5   •   Priority: MVP
+Page content  Raw files, versions, OCR spans, confidence and evidence graph links.
+Sub-features  1. Document list by requirement; 2. PDF/image split-view; 3. Extracted field and page highlights; 
+4. Cross-document comparison panel; 5. Claim-to-evidence lineage; 6. Extraction correction with audit
+Navigation  Next authenticity O05 or compliance O06; overview O03.
+Backend / tech  Signed short-lived file URLs, OCR spans, extracted fields, evidence edges.
+UI states  Unreadable, low-confidence, multiple versions, access denied.
+O05  |  Authenticity & Provenance  (6 sub-features)
+Route  /officer/applications/:id/authenticity   •   Audience: R3/R4/R5   •   Priority: MVP
+Page content  Show separately verified, mismatch, pending, not supported, and anomaly flags with 
+provider/method/time.
+Sub-features  1. Issuer/AICTE source response cards; 2. Certificate identifier verification; 3. Digital signature / 
+QR checks; 4. C2PA/SynthID provider signal panel; 5. Tampering and duplicate indicators; 6. Escalate 
+inconclusive result
+Navigation  Return evidence O04; verification queue O09; review O08.
+Backend / tech  Issuer gateway + C2PA SDK + supported provenance API + OpenCV/hash analysis.
+
+
+=== PAGE 13 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  13
+UI states  Verified, mismatch, pending, not detected, unsupported, verifier offline.
+O06  |  Regulatory Compliance Review  (6 sub-features)
+Route  /officer/applications/:id/compliance   •   Audience: R3/R5   •   Priority: MVP
+Page content  Rule ID, source page, result, evidence, reviewer override rationale and applicability context.
+Sub-features  1. Rule-group evaluation table; 2. APH clause and version citations; 3. Applicability/exception 
+reasons; 4. Regulation-aware RAG explanation; 5. Compare evidence with rules; 6. Re-evaluate after authorized 
+correction
+Navigation  Evidence O04; inspection O07; review O08.
+Backend / tech  Deterministic rule service + approved rule library + RAG hybrid retrieval.
+UI states  Met, potential deficiency, evidence insufficient, not applicable, unresolved.
+O07  |  Infrastructure & Inspection  (6 sub-features)
+Route  /officer/applications/:id/inspection   •   Audience: R3/R4/R5   •   Priority: MVP
+Page content  Room IDs, declared and documented values, APH category, evidence links and human inspection 
+request.
+Sub-features  1. Room/infrastructure declaration table; 2. Area and facility evidence comparison; 3. Plan/photo 
+limitations display; 4. Inspection recommendation reasons; 5. Create focused inspection task; 6. Track 
+response/inspection evidence
+Navigation  Evidence O04; review O08; verification queue O09.
+Backend / tech  Infrastructure records + rule engine + evidence links + task router.
+UI states  Consistent, discrepancy, not determinable, inspection requested.
+O08  |  Officer Review & Actions  (6 sub-features)
+Route  /officer/applications/:id/review   •   Audience: R3/R5   •   Priority: MVP
+Page content  Human-controlled review and routing controls; no automatic final regulatory decision.
+Sub-features  1. Consolidated findings by status; 2. Record observation and rationale; 3. Request clarification / 
+rework; 4. Route to specialist or supervisor; 5. Generate/export review report; 6. Save recommendation and 
+audit
+Navigation  Overview O03; queue O02; reports O10; institution sees published request I12.
+Backend / tech  Workflow policy service + review actions + audited exports + notifications.
+UI states  Draft review, pending response, escalated, review completed.
+O09  |  Verification Task Queue  (6 sub-features)
+Route  /officer/verifications   •   Audience: R4/R3/R5   •   Priority: MVP
+Page content  Queue of tasks with connector state, retry count, evidence references and due windows.
+Sub-features  1. Pending issuer confirmations; 2. External system unavailable cases; 3. Assigned specialist tasks; 
+4. Retry or manual verification request; 5. Record sourced response and timestamp; 6. Inspect linked evidence
+Navigation  Authenticity O05; inspection O07; case overview O03.
+Backend / tech  Connector attempts + safe retries + specialist assignment and audit.
+UI states  Pending, timeout, verified, unresolved, escalated.
+O10  |  Reports & Export Library  (5 sub-features)
+Route  /officer/reports   •   Audience: R3/R5/R7   •   Priority: MVP
+Page content  Case reports that distinguish system-generated evidence and officer conclusion.
+Sub-features  1. Filter cases and report versions; 2. Download review report; 3. Cited rule/evidence summary; 4. 
+History of generated exports; 5. Export audit metadata
+Navigation  Open associated case O03; review O08.
+Backend / tech  Report renderer; immutable report snapshots; permission-gated downloads.
+UI states  Report generating, ready, stale, restricted.
+
+
+=== PAGE 14 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  14
+8. Administrator page specifications (5)
+Admin pages are isolated from everyday scrutiny navigation. Drafting an APH rule, publishing a rule, 
+connecting an issuer, and enabling knowledge retrieval are controlled operations requiring audit and ideally 
+two-person approval.
+Individual page contracts
+A01  |  Users, Roles & Case Access  (5 sub-features)
+Route  /admin/users-roles   •   Audience: R6   •   Priority: MVP
+Page content  Least-privilege role scopes and institution tenant boundaries.
+Sub-features  1. User directory / invite; 2. Role and institution membership; 3. Officer jurisdiction and 
+assignment policy; 4. Deactivate and session revoke; 5. Audit access changes
+Navigation  Admin rules A02; audit A04; settings S05.
+Backend / tech  Identity/authorization service; membership tables; audit events.
+UI states  Invited, active, suspended, no scope.
+A02  |  Regulatory Rule Library  (6 sub-features)
+Route  /admin/rules   •   Audience: R6 (+authorized approver)   •   Priority: MVP
+Page content  Structured rule definitions, source pages, effective ranges, exceptions and test case evidence.
+Sub-features  1. APH version and application-type filter; 2. Edit rule/due-stage conditions; 3. Reference 
+clause/document attachment; 4. Dry-run against fixture cases; 5. Publish/version rollback with approval; 6. 
+Change audit
+Navigation  Knowledge A05; audit A04; officer rule link O06 (read only).
+Backend / tech  Rule repository, validation DSL / Python evaluator, immutable versions.
+UI states  Draft, review, published, superseded, missing source.
+A03  |  Source Connectors & Health  (5 sub-features)
+Route  /admin/integrations   •   Audience: R6   •   Priority: MVP
+Page content  AICTE record adapter, issuer adapters, C2PA/provenance services, notification provider.
+Sub-features  1. Connector registry and access status; 2. Mock/production mode badge; 3. Health, rate limit, 
+timeout metrics; 4. Credentials reference (never display secret); 5. Retry policy and incident indicator
+Navigation  Audit A04; verification queue O09 (authorized route).
+Backend / tech  Adapter config and worker health; secret manager; circuit breaker telemetry.
+UI states  Mock, connected, unauthorized, unavailable, maintenance.
+A04  |  Audit & Governance Log  (5 sub-features)
+Route  /admin/audit   •   Audience: R6/R7   •   Priority: MVP
+Page content  Append-only activity records; do not display document content to non-authorized admins.
+Sub-features  1. Event search/filter; 2. Actor, target and action details; 3. Before/after metadata comparison; 4. 
+Export audit subset; 5. Rule publication and access-change trail
+Navigation  Affected application O03 only if separately authorized; rules A02; users A01.
+Backend / tech  Audit service with retention policy and tamper-evident integrity design.
+UI states  Filtered, archived, export queued, forbidden.
+A05  |  RAG / Knowledge Source Manager  (6 sub-features)
+Route  /admin/knowledge   •   Audience: R6   •   Priority: MVP
+Page content  Regulatory documents, amendments and FAQ corpus with authoritative source metadata.
+
+
+=== PAGE 15 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  15
+Sub-features  1. Upload/register approved APH sources; 2. Manage source effective dates and categories; 3. 
+Chunk/index status and vector health; 4. Citation preview and sample retrieval test; 5. Decommission 
+superseded source; 6. Log source version approvals
+Navigation  Rules A02; auditor A04.
+Backend / tech  Document ingestion, embeddings, pgvector/full-text, approval gate, source ACL.
+UI states  Indexed, partial, rejected, superseded, reindexing.
+9. End-to-end user journeys and state transitions
+9.1 Institution: registration to application submission
+1.
+User visits S01 > S02, authenticates; backend resolves identity, institution membership and permissions; 
+role directs to I01.
+2.
+I01 surfaces previous approved history and unfinished drafts; I02 opens own cases, I03 selects academic 
+year and application type from approved catalog.
+3.
+Backend snapshots current approved institutional record and starts draft; I04 prefills historical data, 
+distinguishes previously approved vs currently proposed changes.
+4.
+I05 calls requirements evaluator to generate applicability-aware checklist by year, category, programme 
+and stage. Not-due and conditional requirements are explicitly marked.
+5.
+I06 uploads each supported document; client screens format/size and gives readability hints, then backend 
+validates actual bytes, scans and processes the file before accepting.
+6.
+Processing worker extracts text (direct PDF or OCR), classifies document, extracts fields, records 
+confidence/uncertainty, source page and content hash.
+7.
+I07 runs institution-safe completeness, validity and consistency checks. User re-uploads corrected 
+documents or edits draft where permitted.
+8.
+I08 displays full application review; server recalculates submission gate from latest revision and current 
+rule version, obtains declaration, freezes submission version and writes audit event.
+9.
+I09 shows acknowledgment and public status. If officer requests correction, user follows I12 > I13 and 
+submits new versions without overwriting original evidence.
+9.2 AICTE: receipt to reviewed findings
+10. Submission event creates/updates a scoped queue item and kicks off full evaluation. O01/O02 show 
+workload but do not imply that the case is already verified.
+11. Officer O03 inspects application identity, proposed changes versus historical approved state and results 
+from individual services.
+12. O04 examines source documents, machine-extracted fields, cross-document discrepancies and Evidence 
+Graph edges.
+13. O05 inspects authorized issuer/API/QR/digital signature results, visual anomaly findings and separated 
+C2PA/SynthID provenance signals.
+14. O06 reviews applicable version-controlled APH rules, RAG-supported citations and deterministic 
+compliance outcomes. Low confidence becomes insufficient evidence, not fabricated compliance.
+15. O07 reviews room-wise records and infrastructure claims, optionally creating a targeted 
+specialist/inspection task.
+16. O08 records a human-authored observation, routes to a specialist/supervisor, requests clarification or 
+finalizes a review-stage recommendation (not automatic regulatory approval).
+17. Verification specialists use O09; generated, versioned reports become available in O10; notifications update 
+the institution only when a review action is explicitly publishable.
+
+
+=== PAGE 16 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  16
+9.3 Application lifecycle states
+CURRENT
+EVENT
+NEXT
+ACTOR / GUARD
+DRAFT
+create_application
+DRAFT
+Institution may create within 
+scope
+DRAFT
+submit
+SUBMITTED
+Complete required 
+submission-stage checks + 
+authorized submitter
+SUBMITTED
+start_officer_review
+UNDER_REVIEW
+Assigned AICTE officer
+UNDER_REVIEW
+request_clarification
+CLARIFICATION_REQUESTED
+Officer explicit published 
+request
+CLARIFICATION_REQUESTED
+submit_response
+UNDER_REVIEW
+Institution permitted before 
+response window closes
+UNDER_REVIEW
+request_source_check
+PENDING_VERIFICATION
+Officer/specialist; source 
+adapter/task
+PENDING_VERIFICATION
+verification_resolved
+UNDER_REVIEW
+Scoped verifier or source 
+response
+UNDER_REVIEW
+recommend_inspection
+INSPECTION_RECOMMENDED
+Authorized officer; not 
+automatic inspection order
+UNDER_REVIEW
+complete_review
+REVIEW_COMPLETED
+Officer action with rationale + 
+access guard
+The workflow above is proposed MVP behavior; official AICTE process-state labels and statutory processing actions must be 
+mapped during integration. All transitions create an append-only audit event.
+9.4 Document pipeline state machine
+STATE
+ENTER CONDITION
+NEXT / RECOVERY
+UPLOADING
+Transport in progress
+UPLOADED or UPLOAD_FAILED
+UPLOADED
+Byte-level size and content sniffing 
+passed
+SAFETY_SCANNING
+SAFETY_SCANNING
+Malware/content controls pass
+QUALITY_ASSESSMENT; if fail REJECTED
+QUALITY_ASSESSMENT
+PDF parse/image checks
+QUEUED_FOR_EXTRACTION or 
+NEEDS_REUPLOAD
+QUEUED_FOR_EXTRACTION
+Worker acknowledges job
+PROCESSING
+PROCESSING
+OCR / extraction
+PROCESSED, NEEDS_MANUAL_REVIEW, 
+or PROCESSING_FAILED
+PROCESSED
+Relevant application changes
+REPROCESSING when needed; original 
+version retained
+9.5 Notifications and visibility
+TRIGGER
+VISIBLE TO
+DESTINATION
+CHANNEL IN MVP
+Upload rejected / marginal 
+image
+Institution submitter
+I06 documents
+Inline + optional in-app
+Precheck deficiency
+Institution members
+I07 validation
+Inline + in-app
+Application submitted
+Institution members / 
+assigned officers
+I09 / O03
+In-app
+Clarification issued
+Institution members
+I12 / I13
+In-app (email optional)
+Specialist task assigned
+Authorized specialist
+O09
+In-app
+External verification resolved
+Assigned reviewer
+O05 / O09
+In-app
+
+
+=== PAGE 17 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  17
+TRIGGER
+VISIBLE TO
+DESTINATION
+CHANNEL IN MVP
+Review report ready
+Authorized officer
+O10
+In-app
+Rule/index update
+Rule administrators
+A02 / A05
+In-app
+10. Functional requirements and 14-feature mapping
+These are the user-prioritized feature groups and provide requirement-to-page traceability. F01-F14 identifiers 
+are normative for this SRS. Some subsystems support both pre-submission and post-submission workflows, but 
+sensitive officer information remains private.
+F01  |  Intelligent Application Identification & Dynamic Checklist
+Problem  Different application requirements
+Required behavior  Category/year/APH selection; required/conditional/NA/not-due items.
+Primary screens  I03 I05 A02
+Implementation  Catalog API, rules, PostgreSQL
+Acceptance  Select intake increase -> applicable checklist differs from routine EoA.
+F02  |  AI-Powered Document Intelligence
+Problem  Complex and unstructured documents
+Required behavior  PDF classification, OCR, normalized schema fields, page confidence.
+Primary screens  I06 O04
+Implementation  PyMuPDF, Tesseract, vision LLM, workers
+Acceptance  Synthetic scan yields fields + source page or explicit unreadable state.
+F03  |  Smart Document Completeness Validator
+Problem  Missing and incomplete documents
+Required behavior  Detect absent mandatory at current stage and missing essential fields.
+Primary screens  I05 I07 O06
+Implementation  Requirements engine, completeness service
+Acceptance  Missing required EoA item flagged but not-yet-due item is not.
+F04  |  Cross-Document Consistency Engine
+Problem  Incorrect and inconsistent information
+Required behavior  Compare names, IDs, address, dates, changed-data context.
+Primary screens  I04 I07 O04
+Implementation  Python normalized match, RapidFuzz, evidence links
+Acceptance  Different legitimate site-change request is classified as proposed change.
+F05  |  Institutional Record Reconciliation, Multi-Source Auth and Evidence Graph
+Problem  Repeated manual verification
+Required behavior  Compare approved historical snapshots; link claims to evidence and issuer result.
+Primary screens  I10 I11 O03 O04 O05
+Implementation  PostgreSQL historical snapshots, gateway, evidence relation tables
+Acceptance  Historical intake differs from requested new intake without automatic fraud flag.
+
+
+=== PAGE 18 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  18
+F06  |  Automated Document Validity Checker
+Problem  Expired and invalid certificates
+Required behavior  Extract issue/expiry, compare regulation-specific reference date.
+Primary screens  I07 O05 O06
+Implementation  PyMuPDF/OCR + deterministic date rules
+Acceptance  Expired sample flagged with exact supporting field and reference date.
+F07  |  Document Forensics and Anomaly Detection
+Problem  Forgery, manipulation, AI-generated media
+Required behavior  Fingerprint duplicates, metadata anomalies, selected forensics, C2PA/SynthID when 
+supported.
+Primary screens  O05
+Implementation  SHA-256/pHash, Pillow/OpenCV, c2pa-python, supported provenance API
+Acceptance  A detected watermark shows provider/method; no-signal never means genuine.
+F08  |  Multi-Source Authentication Gateway
+Problem  Authenticity difficult to confirm
+Required behavior  Authorized issuer/API/QR/signature/reference checks; manual fallback.
+Primary screens  O05 O09 A03
+Implementation  Connector abstraction, mock registry, retries
+Acceptance  Registry mismatch distinguished from timeout/not supported.
+F09  |  Regulation-Aware Compliance Engine
+Problem  Complex or changing AICTE rules
+Required behavior  Versioned rules with APH clause, applicability, conditional exceptions and RAG citations.
+Primary screens  I05 O06 A02 A05
+Implementation  Python rules + pgvector hybrid RAG; source indexing
+Acceptance  Same case evaluated against explicit effective rule version and cited evidence.
+F10  |  AI-Assisted Infrastructure Analyzer
+Problem  Uncertain infrastructure evidence
+Required behavior  Room/area/facility claim vs architect-certified schedule; inspection suggestion.
+Primary screens  I04 O07
+Implementation  Structured infrastructure table, plan extraction, deterministic thresholds
+Acceptance  Synthetic 58 m2 vs 66 m2 example shows discrepancy and potential deficiency.
+F11  |  Explainable AI & Evidence Reports
+Problem  Unclear automated findings
+Required behavior  Finding includes field/page/source, rule, limitation, provenance of check.
+Primary screens  I07 O04 O06 O08 O10
+Implementation  Evidence graph links, report service, RAG grounded language
+Acceptance  Officer can open originating document and rule for any critical finding.
+F12  |  Smart Pre-Submission Compliance Assistant
+Problem  Repeated correction cycles
+Required behavior  Precheck guidance, permitted rectification, document versioning.
+
+
+=== PAGE 19 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  19
+Primary screens  I07 I08 I12 I13
+Implementation  Precheck/rule engine, workflow service, notifications
+Acceptance  Correcting missing document updates precheck without erasing old submission.
+F13  |  Centralized Officer Dashboard & Audit Trail
+Problem  Pending verifications hard to track
+Required behavior  Queues, per-source status, officer actions, immutable event chronology.
+Primary screens  O01 O02 O03 O09 A04
+Implementation  Query models, audit store, event dispatcher
+Acceptance  Officer sees pending case + actor who last updated status.
+F14  |  Adaptive Risk-Based Review & Inspection Recommendations
+Problem  Manual review prioritization inefficient
+Required behavior  Prioritize using transparent unresolved factors; create targeted inspection packet.
+Primary screens  O02 O07 O08
+Implementation  Explainable weighted triage, workflow task queue
+Acceptance  High-priority list shows reason chips and can be manually overridden with rationale.
+Conflict resolution: F05 includes multi-source authentication as an evidence relationship and historical reconciliation 
+capability; F08 is the dedicated issuer verification service. These two requirements reuse one gateway implementation, not 
+duplicate connectors.
+11. Upload validation, document quality and error recovery
+Upload checks are a layered security and usability pipeline. The browser can warn early, but the backend is the 
+sole authority for actual acceptance. Every rejection returns a stable machine-readable code plus accessible, 
+understandable remediation instructions.
+11.1 Proposed MVP file policy — NOT an AICTE regulatory standard
+PARAMETER
+DEMO DEFAULT (CONFIGURABLE)
+ENFORCEMENT / NOTE
+Allowed file types
+PDF, PNG, JPG/JPEG
+Both extension and signature/MIME must 
+agree; deny SVG, Office macros, 
+executables.
+Max single PDF
+20 MB
+Backend hard limit, reverse-proxy limit 
+and friendly UI warning.
+Max single image
+10 MB
+Backend hard limit; decoding budget to 
+prevent decompression bombs.
+Max PDF pages
+50 pages/file
+Tunable by application type; reject with 
+reason or request split.
+Max upload batch
+10 files per request
+Applies only to each request; application-
+level document count rule configured 
+separately.
+Readable scan target
+~150 DPI minimum effective scan; prefer 
+200-300 DPI
+Quality guidance, not a universal legal 
+requirement; assess text legibility in 
+addition.
+Image size hint
+At least 1000 pixels on document text-
+bearing axis
+Heuristic only; small valid high-quality 
+crops may need review.
+Sharpness/contrast
+Calibrated OpenCV heuristic; no 
+universal magic cutoff
+Initial warning / rescan suggestion; use 
+sample-fixture tuning.
+
+
+=== PAGE 20 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  20
+PARAMETER
+DEMO DEFAULT (CONFIGURABLE)
+ENFORCEMENT / NOTE
+Password-protected PDF
+Needs password-free official upload copy 
+unless a secure password flow is 
+supported
+Do not store passwords in metadata/logs.
+Original file integrity
+SHA-256 at receipt; retain immutable 
+original versions
+Hash confirms file identity, not issuing 
+authority authenticity.
+Malware/active content
+Quarantine / deny unsafe files; scan 
+before parse
+Protect PDF/image processing workers; 
+reject embedded active content.
+File-name / metadata
+Sanitize and use opaque object key
+Keep display name separately; prevent 
+path traversal.
+11.2 Exact validation stages
+18. Frontend preflight: accept-list, byte size, file count, image dimensions, filename and obvious format 
+warnings. Show per-file error before network transfer.
+19. Transport: authorized pre-signed upload or protected API, streamed upload and progress; cap request size 
+and enforce tenant/application ownership.
+20. Backend sniff: inspect actual MIME/file signature, extension consistency, decompression limits, PDF 
+trailer/readability and safe parser policies.
+21. Threat screening: malware scanning and quarantine, PDF JavaScript/embedded risky content restrictions, 
+rate limits and anti-zip-bomb memory ceilings.
+22. Readability: document opens, page count within policy, text layer availability, scan clarity/contrast, 
+orientation and OCR quality. Give reupload advice for recoverable deficiencies.
+23. Normalize: route born-digital pages to text extraction; scans to OCR; retain original orientation, page 
+coordinates and checksum.
+24. Extract/classify: type-specific schema, typed fields, confidence/uncertainty and source box; never fabricate 
+absent fields.
+25. Post-extraction validation: compare against checklist, application and history; create findings; enqueue 
+source verification where appropriate.
+26. Persist: attach full processing state, worker version, timestamps, original document ID, derived artifact IDs 
+and audit event. Notify authorized uploader when action is required.
+11.3 Error and remediation contract
+ERROR CODE
+VISIBLE MESSAGE
+NEXT ACTION
+BLOCK?
+FILE_TYPE_UNSUPPORTED
+Please upload PDF, PNG or 
+JPEG.
+Choose allowed format.
+Yes
+FILE_TOO_LARGE
+This file exceeds the current 
+upload limit.
+Reduce file size without 
+obscuring text.
+Yes
+PDF_ENCRYPTED
+Password-protected PDF 
+cannot be processed in this 
+flow.
+Supply a permitted 
+unencrypted copy.
+Yes
+FILE_UNREADABLE
+We could not open this file 
+safely.
+Upload a valid export or 
+rescan.
+Yes
+FILE_SECURITY_REJECTED
+Upload failed a safety check.
+Use official/safe source and 
+contact support.
+Yes
+IMAGE_LOW_QUALITY
+Text appears difficult to read.
+Rescan at better 
+resolution/light; allow manual 
+review if policy permits.
+Conditional
+OCR_LOW_CONFIDENCE
+Some fields could not be 
+reliably identified.
+Confirm or re-upload affected 
+pages.
+Conditional
+
+
+=== PAGE 21 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  21
+ERROR CODE
+VISIBLE MESSAGE
+NEXT ACTION
+BLOCK?
+DOCUMENT_TYPE_UNCERTAI
+N
+Document category could not 
+be established.
+Tag type and send for review.
+Conditional
+UPLOAD_NETWORK_ERROR
+Upload interrupted.
+Retry upload; avoid duplicate 
+record.
+No - retry
+SOURCE_CHECK_UNAVAILAB
+LE
+Verification provider 
+currently unavailable.
+Continue pending/manual 
+check; never show verified.
+No - flag
+11.4 PDF/image quality algorithm
+Use inexpensive deterministic checks first. For digital PDFs, inspect parseability, text presence, page dimensions 
+and extracted spans. For image scans, inspect size, orientation, contrast, blur indicators, OCR token count and 
+the completeness of fields expected for its category. Combine these into a user-friendly quality state (GOOD / 
+MARGINAL / UNREADABLE) while preserving individual check outputs. Thresholds are tunable developer 
+heuristics; only objective security and technical hard limits should cause automatic upload rejection. A forged-
+looking but technically readable document is not rejected on upload; it is held for officer-side forensics.
+12. Detailed logical and deployment architecture
+12.1 Components and trust boundaries
+Figure 2. Logical components and trust boundaries. Dashed external integrations are permission-dependent and mocked in 
+the MVP.
+
+
+=== PAGE 22 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  22
+12.2 Layer responsibilities and technology
+LAYER
+CHOICE / COMPONENT
+RESPONSIBILITY
+Frontend
+React, TypeScript, Vite, Tailwind, 
+shadcn/ui, TanStack Query
+Role-scoped route rendering, forms, 
+upload progress, document review, 
+accessibility.
+Backend API
+Python FastAPI, Pydantic, SQLAlchemy, 
+Alembic
+Request validation, RBAC, workflow 
+orchestration, typed service endpoints.
+Identity
+Supabase Auth initially; OIDC adapter 
+abstraction
+Session management, membership-to-
+role resolution and verification.
+Data
+PostgreSQL + optional pgvector
+Transactions, institutional snapshots, rule 
+versions, findings, evidence edges and 
+audit.
+Files
+Private Supabase Storage or compatible 
+object store
+Immutable original file versions, 
+normalized derivatives, access-expiring 
+URLs.
+Processing
+PyMuPDF, Tesseract, Pillow, OpenCV, 
+optional LLM
+PDF/OCR, content quality, classification, 
+extraction, image indicators.
+Rules
+Python modular rule engine + RapidFuzz
+Repeatable deterministic checks, 
+temporal applicability, normalized 
+comparison.
+RAG
+pgvector + PostgreSQL full-text / curated 
+source corpus
+Rule-backed contextual explanations 
+with page/section citations; not final 
+decisions.
+Provenance
+c2pa-python/c2patool + supported 
+provider API
+Signed Content Credentials and 
+supported SynthID signals when 
+available.
+Integration
+Issuer/AICTE adapter interface + mock 
+registries
+Separable verified source responses, 
+cache, retry, and confidence provenance.
+Async jobs
+Bounded in-process jobs early; 
+Redis/Celery later
+Long OCR/verification tasks and progress 
+notifications.
+Testing/deployment
+pytest, Playwright, Docker Compose, 
+GitHub Actions
+Unit/API/E2E tests, reproducible demo 
+and deploy pipeline.
+12.3 Submission and processing sequence
+27. POST /applications/:id/submit verifies role, mutable draft state, current requirement snapshot and 
+idempotency key; writes SUBMITTED event and freezes revision in one transaction.
+28. Backend schedules PROCESS_APPLICATION job containing only opaque IDs; workers resolve authorized 
+inputs and storage objects internally.
+29. Document processor performs quality/OCR, classifies and writes versioned extracted fields with evidence 
+span references.
+30. Verification orchestrator asks issuer adapter for supported documents; each attempt stores source system, 
+issued-at check timestamp, proof material and outcome, including unavailable states.
+31. Consistency service compares extracted fields with the submitted claims and immutable approved 
+snapshots; evidence graph links every comparison.
+32. Compliance engine executes approved deterministic rules for year/category/version and persists per-rule 
+outcome.
+33. Provenance service reads original media where possible and stores distinct C2PA/SynthID/anomaly signals, 
+not a single global "fake" flag.
+34. RAG retrieves approved source excerpts for explanatory text, with citations and abstention when relevant 
+evidence is missing.
+
+
+=== PAGE 23 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  23
+35. Report synthesizer produces officer-ready, sourced finding summaries; review queue priority is based on 
+explicit factors and can be overridden by authorized humans.
+36. Notification service sends scoped updates; officer retains review/clarification/reassignment authority.
+12.4 Mock-to-production source adapter contract
+INPUT
+REQUIRED RETURN
+INTERPRETATION
+issuer_type, certificate_number, claimed 
+attributes, authorized context
+adapter_name, mode MOCK/LIVE, 
+supported, status, match_fields, 
+source_time, evidence_ref, errors
+Never map 
+timeout/not-found/unsupported to 
+"forged" automatically.
+institution Permanent ID, academic_year
+official/synthetic snapshot, source system, 
+effective_at, source_ref, verification_state
+Keep imported and user-entered histories 
+separately until authoritative 
+reconciliation.
+original image/media object
+provider name, signal type, outcome, 
+confidence/validation state, tested_at, 
+supported_media, raw_response_ref
+C2PA valid and watermark detected are 
+distinct from issuer authenticity.
+12.5 Environment and deployment
+Local MVP: Docker Compose may run React dev server, FastAPI, PostgreSQL, storage emulator/local files and 
+optional Redis/Celery. Use environment-based secrets and seed fixtures. Staging: HTTPS, protected bucket, 
+migrations, job health monitoring and test-only identity. Production target: AICTE-approved hosting, network 
+allowlists, secrets manager, OIDC, private processing queues, issuer/API agreements, hardened file scanning, 
+backups, retention policy and incident response. Do not represent hosting choices as approved government 
+architecture before review.
+13. AI, OCR, RAG, provenance and regulatory execution
+13.1 AI responsibilities vs deterministic checks
+RESPONSIBILITY
+METHOD
+AUTHORITY LIMIT
+Read typed PDF
+PyMuPDF direct text extraction
+Extracted text is a claim, not authentic 
+proof.
+Read scan
+Tesseract OCR; optional vision LLM for 
+hard layouts
+Record uncertainty, language limits, field 
+bbox.
+Classify document
+Type classifier / LLM with bounded enum
+Unknown type must be reviewable.
+Extract fields
+Schema-constrained LLM + Pydantic 
+validation
+Null if absent; keep source region and 
+model version.
+Missing/expiry/area/intake arithmetic
+Python deterministic APH-versioned 
+rules
+Only approved source facts and reference 
+dates.
+Institution history match
+SQL time-aware snapshots + normalized 
+comparison
+Requested change is not necessarily a 
+conflict.
+RAG explanation
+Hybrid retrieval over approved indexed 
+APH sources
+Return citations; never invent clause or 
+determine final approval.
+AI/image provenance
+C2PA signed claims; supported SynthID 
+signals; forensics
+No universal AI classifier; absent signal is 
+inconclusive.
+Risk prioritization
+Interpretable unresolved-issue factors
+Queue ordering, not institutional 
+compliance or fraud verdict.
+Official decision
+Authorized human in AICTE workflow
+Never automated by platform.
+
+
+=== PAGE 24 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  24
+13.2 Regulation-aware RAG design
+37. Administrator registers authoritative APH, circular or FAQ with source URL, checksum, 
+publication/effective dates, academic years and categories; ingestion cannot publish a rule.
+38. Parser extracts section hierarchy and page references; creates chunks with clause, section, page, 
+source_version, applicable_year and source_approval flags.
+39. Only approved chunks are indexed; maintain PostgreSQL full-text and vector embedding indexes with 
+matching filter semantics.
+40. For a case, filter by academic year, category, effective interval, approval state and access scope before 
+hybrid keyword/semantic ranking.
+41. Retrieve snippets with exact citations. LLM forms a constrained explanation referencing only approved 
+matches and actual extracted evidence; show no answer if grounding is weak.
+42. Rule evaluation remains separate: a deterministic evaluator consumes approved rule IDs, not 
+conversational LLM output.
+43. Officer can inspect original excerpt and rule mapping; no citation-free "compliant" declaration.
+13.3 AI image / certificate provenance
+C2PA validates available signed provenance assertions for compatible media; SynthID indicates a supported 
+watermark detectable by a provider tool. Their availability depends on provider and file transformations. 
+OpenAI documents content provenance checks for supported image/audio files; the tool does not generalize to 
+every AI system. These are not substitutes for issuer verification, and a result of not_detected does not prove 
+human origin. The viewer shall show provider, check type, checked file version, status and verification 
+timestamp independently.
+13.4 Regulation example: engineering classroom
+Prototype fixture: for a selected engineering classroom rule from APH Annexure 3.2.1, reference minimum 66 
+m2 for a division of 60. If application declares 75 m2 and certified room schedule records 58 m2, system creates 
+(a) declared-versus-certified area mismatch and (b) possible area deficiency of 8 m2 under that selected rule. It 
+attaches room ID, certified plan page and exact APH clause. Do not apply this rule to unrelated programmes or 
+statuses; verify exemptions and effective rule version first. Figures are illustrative test data from the earlier 
+blueprint, not observed institution data.
+13.5 Output object and evidence contract
+Every finding has a stable ID, application_revision_id, category, check_type, severity, visibility, 
+human_review_required, rule_id/version or method_name, observed values, expected conditions, evidence 
+node links, explanation and evaluation timestamp. LLM explanations must be derived from the saved 
+deterministic result; uncertainty must remain explicit.
+14. Canonical data model and evidence lineage
+The data model explicitly separates authoritative historic state, proposed current application, uploaded source 
+evidence, extracted claims, external source responses, machine findings and human decisions. Tenant scoping 
+is built into queries; version tables prevent silent overwrites.
+ENTITY
+KEY FIELDS / RELATIONSHIP
+MVP NEED
+users / roles / memberships
+user_id, role_id, institution_id, validity 
+window
+Required
+institutions
+institution_id, Permanent ID, current 
+display profile, source status
+Required
+historical_approval_snapshots
+snapshot_id, institution_id, 
+academic_year, programmes, intake, 
+source_ref, effective_at
+Required
+
+
+=== PAGE 25 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  25
+ENTITY
+KEY FIELDS / RELATIONSHIP
+MVP NEED
+applications
+application_id, institution_id, category, 
+academic_year, status, active_revision_id, 
+assignee
+Required
+application_revisions
+revision_id, submitted_at, ruleset_id, 
+frozen manifest, actor
+Required
+application_claims
+claim_id, revision_id, field_key, 
+field_value, evidence_refs
+Required
+course_intake_records
+programme, course, 
+existing_approved_intake, 
+requested_intake
+Required for change demo
+infrastructure_room_records
+room_id, room_type, declared_area, 
+department, source document
+Required for infra demo
+requirement_templates
+template_id, category, version, stage, 
+conditional predicate
+Required
+application_requirements
+application_id, requirement_id, 
+applicable status, due stage, evidence ids
+Required
+documents
+document_id, application_id, type, file 
+status, current_version_id
+Required
+document_versions
+version_id, hash, storage_key, 
+original_name, uploader, upload_time
+Required
+extracted_fields
+field_id, version_id, page, coordinates, 
+name, value, confidence/uncertainty
+Required
+rule_sets / compliance_rules
+ruleset_id, rule_id, source clause, 
+effective interval, status, approved by
+Required
+evaluations / findings
+evaluation_id, finding_id, rule, status, 
+severity, visibility
+Required
+evidence_nodes / evidence_edges
+from_type/id, to_type/id, relationship, 
+source_version
+Required minimal
+issuer_connectors / verification_attempts
+adapter_id, mock/live, external reference, 
+response, time, result
+Required mock
+review_assignments / officer_actions
+case_id, actor, recommendation/action, 
+notes, timestamp
+Required
+clarification_requests / responses
+request_id, allowed_until, publish state, 
+response revision
+Required
+notifications
+recipient user, event type, object_ref, 
+delivered_at, read_at
+Required
+audit_events
+actor, scope, operation, target, 
+before/after digest, timestamp
+Required
+rag_sources / rag_chunks
+source_id, clause, academic year, page, 
+effective date, embedding/ref, approved
+RAG limited MVP
+inspection_tasks
+finding refs, routed specialist, state, 
+evidence
+Advanced demo
+report_snapshots
+report_id, application_revision_id, 
+artifact_ref, created_at, reviewer
+Required minimal
+14.1 Data invariants
+
+Historical approved snapshot is immutable after publication; new information is stored as an additional 
+version/correction record with authorization.
+
+Current application claim and approved previous baseline are separate tables and cannot be silently 
+conflated.
+
+
+=== PAGE 26 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  26
+
+Every uploaded file version receives content hash and upload actor; replacement creates another version, 
+not a destructive overwrite.
+
+Every significant finding must have at least one evidence link or explicit reason why evidence is 
+unavailable.
+
+A regulatory evaluation carries exact rule_set_id, clause/source reference and evaluation timestamp.
+
+External issuer result stores whether MOCK or LIVE and whether external confirmation truly occurred.
+
+Notifications contain target IDs and safe summaries only; real permission checked again on click.
+14.2 Evidence graph relations
+Implement the Evidence Graph initially in PostgreSQL (no dedicated graph database). A typical path is 
+Institution -> Approval Snapshot -> Application Claim -> Document Version -> Extracted Field/Page -> Issuer 
+Verification -> Compliance Rule -> Finding -> Officer Action. The claim may link to multiple sources with 
+SUPPORTS, CONTRADICTS, SUPERSEDES, DECLARES and VERIFIED_BY edges. Officer UI draws these 
+relationships from authorized records.
+15. REST API and notifications contract
+All endpoints are illustrative REST interfaces under /api/v1; naming can evolve if front/back end contracts 
+remain versioned. FastAPI/Pydantic shall publish OpenAPI schemas. Authorization checks every read/write; 
+write APIs require idempotency controls for submission, verification and document replacement.
+15.1 Minimum endpoint inventory
+METHOD
+ENDPOINT
+RESPONSIBILITY
+PAGES
+POST
+/auth/session
+Login adapter / role mapping
+S02
+GET
+/me
+Signed-in account and 
+effective roles
+S05
+GET
+/institutions/:id
+Institution profile within 
+scope
+I01 I04
+GET
+/institutions/:id/history
+Approved snapshots only
+I10
+GET
+/institutions/:id/
+history/:recordId
+Record details and evidence
+I11
+GET
+/applications
+Scoped case list and filters
+I02 O02
+POST
+/applications
+Create typed draft
+I03
+GET
+/applications/:id
+Read own/assigned case
+I04 I09 O03
+PATCH
+/applications/:id/draft
+Save permitted draft fields
+I04
+GET
+/applications/:id/requirements
+Versioned checklist
+I05
+POST
+/applications/:id/documents
+Upload authenticated file
+I06
+GET
+/applications/:id/documents
+Document/version list
+I06 O04
+GET
+/documents/:id/versions/:v
+Authorized evidence 
+metadata/preview URL
+O04 I06
+POST
+/applications/:id/precheck
+Run institution-safe validation
+I07
+GET
+/applications/:id/precheck
+Read sanitized precheck 
+findings
+I07
+POST
+/applications/:id/submit
+Idempotent final submit
+I08
+GET
+/applications/:id/timeline
+Publishable state timeline
+I09 O03
+GET
+/applications/:id/findings
+Full officer findings or 
+institution-safe subset
+O03 O04 O06
+GET
+/applications/:id/authenticity
+Issuer/provenance results 
+(officer only)
+O05
+
+
+=== PAGE 27 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  27
+METHOD
+ENDPOINT
+RESPONSIBILITY
+PAGES
+POST
+/applications/:id/verifications
+Authorized check request
+O05 O09
+GET
+/applications/:id/compliance
+Rule evaluations and RAG 
+citations
+O06
+POST
+/applications/:id/compliance/
+recheck
+Re-evaluate approved rules
+O06
+GET
+/applications/:id/
+infrastructure
+Room/facility check details
+O07
+POST
+/applications/:id/inspection-
+tasks
+Request focused inspection
+O07
+POST
+/applications/:id/review-
+actions
+Record authorized review 
+action
+O08
+GET
+/verifications
+Specialist pending task list
+O09
+GET
+/reports
+Scoped report list
+O10
+POST
+/applications/:id/reports
+Create immutable report 
+snapshot
+O08 O10
+GET
+/clarifications
+Institution deficiency inbox
+I12
+POST
+/clarifications/:id/responses
+Upload permitted response
+I13
+GET
+/notifications
+Scoped notification feed
+S04
+PATCH
+/notifications/:id/read
+Mark one event read
+S04
+GET
+/admin/rules
+Rule catalog and versions
+A02
+POST
+/admin/rules/:id/publish
+Approved source-backed 
+publication
+A02
+GET
+/admin/integrations
+Connector mode/health
+A03
+GET
+/admin/audit
+Controlled log search
+A04
+POST
+/admin/rag-sources
+Ingest approved knowledge 
+sources
+A05
+15.2 Response conventions
+Use consistent JSON envelopes: data, meta (request_id, source_version, processed_at), and error {code, message, 
+field_errors, retryable}. Paginated list responses include cursor/page and stable sorting. All derived findings 
+include analysis job ID and revision. Long-running operations return a job reference with 
+QUEUED/PROCESSING/COMPLETED/FAILED and progress where measurable; avoid fabricated progress 
+percentages.
+15.3 Notifications delivery architecture
+Backend emits domain events after database commit to an outbox; consumer transforms them into scoped 
+notifications with deduplication key. MVP polls a notification API or uses server-sent events; email and SMS are 
+opt-in integrations after permission and delivery policy review. Notification links carry object IDs only and 
+resolve through the same backend authorization as ordinary navigation.
+15.4 Example finding payload
+{
+  "finding_id": "F-DEMO-001",
+  "application_id": "APP-DEMO-019",
+  "revision_id": "REV-2",
+  "type": "INFRASTRUCTURE_AREA_MISMATCH",
+  "status": "NEEDS_REVIEW",
+  "visibility": "OFFICER_FULL_AND_INSTITUTION_SUMMARY",
+  "rule": { "id": "DEMO-ENG-CLASSROOM", "version": "2026-27-curated", "aph_reference": "Annexure 3.2.1" },
+
+
+=== PAGE 28 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  28
+  "observed": { "declared_m2": 75, "certified_m2": 58, "reference_m2": 66 },
+  "evidence": [ { "document_version_id": "DVER-14", "page": 3, "field": "room_area_m2", "room_id": "C-101" } ],
+  "method": "deterministic_rule",
+  "human_review_required": true,
+  "is_mock": true
+}
+16. Security, privacy and non-functional requirements
+ID
+CATEGORY
+TESTABLE REQUIREMENT
+NFR-01
+Authentication/authorization
+All protected routes require valid session; 
+each object-level operation checks tenant, 
+role, assignment and scope; denial is 
+logged without leaking existence.
+NFR-02
+Confidentiality
+Private document storage; short-lived 
+signed URLs; TLS in transit; encryption at 
+rest supported by host; no public buckets 
+for evidence.
+NFR-03
+Data minimization
+Only fields required for application, 
+verification and audit are retained; 
+defined retention and deletion process 
+after policy review.
+NFR-04
+Upload security
+Server verifies content signature, size, 
+page budget, malware scan, parser 
+sandbox limits, and filename sanitation.
+NFR-05
+Audit integrity
+Log security, application, evidence, rule 
+and officer transitions with actor, 
+timestamp and version; restrict 
+edit/delete.
+NFR-06
+Accessibility
+WCAG 2.2 AA design target; keyboard 
+navigation, accessible form errors and 
+appropriate contrast; manual and 
+automated checks.
+NFR-07
+Performance targets (MVP)
+At 100 synthetic applications: typical list 
+page <=3 sec p95 on staging; upload 
+acceptance status <=5 sec excluding 
+transfer/large processing; async work 
+never blocks navigation.
+NFR-08
+Resilience
+Processing failure retains original 
+document and previous result; async 
+retries are bounded/idempotent; external 
+outage shown as unavailable.
+NFR-09
+Explainability
+Every material automated finding has 
+method, timestamp, source/evidence and 
+limitations or is marked incomplete.
+NFR-10
+Observability
+Structured logs, per-task status and error 
+rate, request IDs and safe redaction; 
+monitor connector errors and worker 
+failures.
+NFR-11
+Responsiveness
+Critical flows usable at 390px width 
+without horizontal document-form 
+overflow; full evidence viewer optimized 
+for desktop with mobile fallback.
+NFR-12
+Backups & recovery
+Staging backup/restore tested for 
+database and document manifest; 
+production RPO/RTO decided with 
+operator.
+
+
+=== PAGE 29 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  29
+ID
+CATEGORY
+TESTABLE REQUIREMENT
+NFR-13
+Safe LLM calls
+Prompt injection isolation; retrieval ACL 
+filtering; model outputs schema 
+validated; external transfer gated by 
+policy and synthetic data in demo.
+NFR-14
+Regulatory governance
+Rules require source metadata, approval, 
+versioning and test fixture; no LLM-
+published regulatory requirements.
+NFR-15
+Transparency
+Always display MOCK/DEMO when 
+verification result, institution history or 
+document is synthetic; never imply 
+official integration.
+NFR-16
+Compatibility
+Latest stable Chromium and Firefox 
+tested; PDF rendering and download 
+behavior verified; mobile browsers 
+smoke tested.
+16.1 Threats and defenses
+
+Cross-tenant IDOR: institute A requests institute B application ID; backend returns 
+forbidden/indistinguishable response and audit event.
+
+Malicious PDF: content sniffing, anti-malware scanning, sandboxed parsers, resource caps and no shell 
+execution on attacker-controlled filenames.
+
+Prompt injection in uploaded PDF or retrieved handbook text: documents are data; restrict tools and 
+allowed outputs, cite original sources and never run instructions contained in documents.
+
+Forged certificate: compare claims with authorized issuing sources and signing trust anchors; do not 
+confuse visual similarity with source confirmation.
+
+Admin rule tampering: version immutable published rules, require source documentation, approval 
+workflow and reproducible tests.
+
+Privilege escalation: revoke sessions and enforce assignment-level checks; data filtering must occur at 
+query layer as well as UI.
+16.2 Supported standards and governance
+Adopt W3C WCAG 2.2 AA as the UI accessibility target [R05]; use OWASP ASVS 5.0.0 as an application security 
+reference [R06]. Treat applicable Indian data protection requirements and public-sector hosting policy as 
+deployment review items requiring organizational confirmation, not claims that this prototype is certified.
+17. MVP scope, synthetic cases and acceptance tests
+The MVP shall expose the navigation and working interactions for all agreed modules. The core vertical slice 
+(submission through officer evidence-linked review) must run end to end. Advanced source and model 
+integrations may use fully identified mocks/limited fixtures, never silently fabricated verified results.
+17.1 MVP feature tiers
+TIER
+MEANING
+INCLUDED
+P0 - must work end-to-end
+A real backend and persistent records 
+drive the UI.
+S02, S04, I01-I10, I12-I13, O01-O06, O08-
+O10; F01-F06, F09, F11-F13; mock issuer 
+F08.
+P1 - thin but functional demo
+One selected case/fixture and honest 
+limited integration.
+I11, O07, A01-A05; F07 basic 
+forensic/C2PA; F10 one room-area rule; 
+F14 transparent queue score; limited RAG 
+index.
+
+
+=== PAGE 30 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  30
+TIER
+MEANING
+INCLUDED
+P2 - architecture/future depth
+Stub/contract only if proper permissions 
+or datasets unavailable.
+Live AICTE sync, real issuer APIs, 
+universal AI imagery detection, advanced 
+ML forensics, full multi-programme rule 
+coverage, live inspection.
+All pages
+33 unique routed templates rendered and 
+permission-checked.
+Every feature has explicit route visibility, 
+data state and test coverage, even when 
+source is a labeled demo fixture.
+17.2 Minimum synthetic data pack
+FIXTURE
+DOCUMENTS / HISTORY
+EXPECTED DEMONSTRATION
+CASE-A: Routine EoA missing certificate
+Institution with previous approval, 
+Affidavit 2, selected PDFs, missing 
+required doc due at chosen stage
+Checklist > upload > missing item 
+precheck > officer finding/clarification.
+CASE-B: Corrected file and quality issue
+Rotated/blurred scan, oversized PDF, 
+readable replacement and two versions
+Reject/warn with remediation, re-upload 
+and evidence version preserved.
+CASE-C: Identity and expiry mismatch
+Certificate institution differs from 
+application; expired date with known 
+reference date
+Separate factual mismatch and validity 
+warning with source page.
+CASE-D: Intake 60 -> 120 proposed
+Previous approved snapshot 60; request 
+120, synthetic supporting documents
+Legitimate proposed change not falsely 
+marked forgery; relevant conditions 
+selected.
+CASE-E: Infrastructure room 75/58/66 m2
+Declared 75; certified 58; selected 
+reference 66; simulated architect 
+certificate room schedule
+Mismatch + potential regulatory 
+deficiency + inspection rationale.
+CASE-F: Authority verification
+Mock issuer registry matching and 
+mismatching identifiers; timeout scenario
+Verified / mismatch / unavailable 
+independent outcomes and audit.
+CASE-G: Provenance
+Synthetic C2PA example and no-signal 
+image; optional supported provider 
+verification
+Known signed metadata signal detected; 
+no-signal remains inconclusive.
+CASE-H: Reg-aware RAG
+Selected approved APH clauses, one 
+superseded/irrelevant excerpt
+Cited applicable clause; correct academic-
+year filter; abstain on missing evidence.
+CASE-I: RBAC and audit
+Two institutes, two officers, reviewer and 
+admin accounts
+Cross-tenant denial; case assignment; 
+review actions and notifications traced.
+17.3 Acceptance tests (test cases are normative)
+TEST
+PASS CONDITION
+PAGES
+AT-01
+Institution logs in and sees only its own 
+profile and previous authorized/synthetic 
+year-wise approved records.
+S02 I01 I10 I11
+AT-02
+Application type/year changes checklist; 
+conditional and not-yet-due requirements 
+do not produce false missing flags.
+I03 I05
+AT-03
+Disallowed file type / oversized file / 
+corrupt PDF is rejected before extraction 
+with actionable reason.
+I06
+AT-04
+Blurred or small scan produces readable-
+quality warning; correction produces 
+new immutable document version.
+I06 O04
+
+
+=== PAGE 31 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  31
+TEST
+PASS CONDITION
+PAGES
+AT-05
+Successful digital PDF or OCR scan 
+extracts required fields with source page 
+and uncertainty markers.
+I06 O04
+AT-06
+Document missing at submission stage is 
+flagged on institution precheck; later 
+upload clears corresponding error.
+I07 I08
+AT-07
+Application once submitted is immutable 
+as a revision; repeated submit request 
+does not create duplicate official case.
+I08 I09
+AT-08
+Authorized officer sees submitted case in 
+queue and relevant history, evidence and 
+verification statuses.
+O02 O03 O04
+AT-09
+Issuer mock match/mismatch/timeout 
+produces different results with MOCK 
+badge; no timeout marked verified.
+O05 O09
+AT-10
+Valid available C2PA/provenance signal 
+shown with verifier attribution; absent 
+signal does not trigger “genuine”.
+O05
+AT-11
+Deterministic APH rule evaluates selected 
+58 vs 66 m2 with correct clause and 
+alternative applicability protection.
+O06 O07
+AT-12
+Officer opens any material finding -> 
+exact document version/page and rule 
+source reference.
+O04 O06
+AT-13
+Officer issues clarification, institution 
+receives scoped notification, responds 
+with revised evidence and retained prior 
+version.
+O08 S04 I12 I13
+AT-14
+Risk-priority chips show interpretable 
+causes, not unsupported global fraud 
+score; officer can override with rationale.
+O02 O08
+AT-15
+RAG retrieves version-filtered approved 
+APH passage and abstains when citation 
+missing.
+O06 A05
+AT-16
+Unauthorized institution cannot access 
+another tenant case through manually 
+edited URL or API call.
+All protected
+AT-17
+Supervisor and admin actions are logged; 
+admins without content grant cannot 
+freely open case evidence.
+A01 A04
+AT-18
+All 33 route templates have 
+empty/loading/error states, keyboard 
+navigation and working links.
+All 33
+17.4 Demonstration story for judges
+44. Log in as College ABC; see Permanent ID and prior 2025-26 approved intake/history timeline.
+45. Create 2026-27 EoA draft, inspect automatically generated checklist; upload readable PDF and a blurred 
+sample and watch quality feedback.
+46. Leave mandatory applicable evidence missing, run precheck and see a specific correction request before 
+submission.
+47. Correct evidence and submit; show final acknowledgment and immutable revision on I09.
+48. Log in as AICTE reviewer; open O02 queue, enter O03 case and trace certificate field to original PDF in O04.
+
+
+=== PAGE 32 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  32
+49. Open O05 and show a MOCK issuer mismatch or C2PA/SynthID verification signal with meaningful 
+limitations.
+50. Open O06/O07 and show rule-cited infrastructure or historical comparison findings.
+51. Record a clarification on O08; switch back to institution and respond through I12/I13; demonstrate audit 
+chronology and updated status.
+18. Feature-page-service traceability matrix
+This matrix links every agreed feature to the user-visible page, implementation service and validation proof. It 
+is the baseline for Codex issue breakdown and acceptance coverage.
+ID
+FEATURE
+VISIBLE PAGE IDS
+PRIMARY 
+BACKEND / TECH
+ACCEPTANCE PROOF
+F01
+Intelligent Application 
+Identification & 
+Dynamic Checklist
+I03 I05 A02
+Catalog API, rules, 
+PostgreSQL
+Select intake increase 
+-> applicable checklist 
+differs from routine 
+EoA.
+F02
+AI-Powered Document 
+Intelligence
+I06 O04
+PyMuPDF, Tesseract, 
+vision LLM, workers
+Synthetic scan yields 
+fields + source page or 
+explicit unreadable 
+state.
+F03
+Smart Document 
+Completeness Validator
+I05 I07 O06
+Requirements engine, 
+completeness service
+Missing required EoA 
+item flagged but not-
+yet-due item is not.
+F04
+Cross-Document 
+Consistency Engine
+I04 I07 O04
+Python normalized 
+match, RapidFuzz, 
+evidence links
+Different legitimate 
+site-change request is 
+classified as proposed 
+change.
+F05
+Institutional Record 
+Reconciliation, Multi-
+Source Auth and 
+Evidence Graph
+I10 I11 O03 O04 O05
+PostgreSQL historical 
+snapshots, gateway, 
+evidence relation tables
+Historical intake differs 
+from requested new 
+intake without 
+automatic fraud flag.
+F06
+Automated Document 
+Validity Checker
+I07 O05 O06
+PyMuPDF/OCR + 
+deterministic date rules
+Expired sample flagged 
+with exact supporting 
+field and reference 
+date.
+F07
+Document Forensics 
+and Anomaly Detection
+O05
+SHA-256/pHash, 
+Pillow/OpenCV, c2pa-
+python, supported 
+provenance API
+A detected watermark 
+shows 
+provider/method; no-
+signal never means 
+genuine.
+F08
+Multi-Source 
+Authentication 
+Gateway
+O05 O09 A03
+Connector abstraction, 
+mock registry, retries
+Registry mismatch 
+distinguished from 
+timeout/not supported.
+F09
+Regulation-Aware 
+Compliance Engine
+I05 O06 A02 A05
+Python rules + pgvector 
+hybrid RAG; source 
+indexing
+Same case evaluated 
+against explicit 
+effective rule version 
+and cited evidence.
+F10
+AI-Assisted 
+Infrastructure Analyzer
+I04 O07
+Structured 
+infrastructure table, 
+plan extraction, 
+deterministic 
+thresholds
+Synthetic 58 m2 vs 66 
+m2 example shows 
+discrepancy and 
+potential deficiency.
+
+
+=== PAGE 33 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  33
+ID
+FEATURE
+VISIBLE PAGE IDS
+PRIMARY 
+BACKEND / TECH
+ACCEPTANCE PROOF
+F11
+Explainable AI & 
+Evidence Reports
+I07 O04 O06 O08 O10
+Evidence graph links, 
+report service, RAG 
+grounded language
+Officer can open 
+originating document 
+and rule for any critical 
+finding.
+F12
+Smart Pre-Submission 
+Compliance Assistant
+I07 I08 I12 I13
+Precheck/rule engine, 
+workflow service, 
+notifications
+Correcting missing 
+document updates 
+precheck without 
+erasing old submission.
+F13
+Centralized Officer 
+Dashboard & Audit 
+Trail
+O01 O02 O03 O09 A04
+Query models, audit 
+store, event dispatcher
+Officer sees pending 
+case + actor who last 
+updated status.
+F14
+Adaptive Risk-Based 
+Review & Inspection 
+Recommendations
+O02 O07 O08
+Explainable weighted 
+triage, workflow task 
+queue
+High-priority list shows 
+reason chips and can 
+be manually 
+overridden with 
+rationale.
+18.1 Critical cross-cutting dependencies
+DEPENDENCY
+WHY IT MUST BE READY FIRST
+CONSUMERS
+Role/tenant identity contract
+Otherwise preview links and officer 
+queues may disclose cases.
+All protected routes
+Application/revision data model
+Otherwise submissions, history and 
+corrections lose provenance.
+I03-I13, O02-O10
+Rule-set and requirement version
+Otherwise checklist and compliance 
+engine disagree.
+I05 I07 O06 A02
+Document file/version lifecycle
+Otherwise cannot trace and re-run a 
+finding correctly.
+I06 O04 O05
+Evidence-reference structure
+Otherwise report explanations become 
+disconnected prose.
+O04 O06 O08 O10
+Mock-vs-live flags
+Otherwise prototype falsely asserts 
+production source verification.
+O05 O09 A03 and reporting
+18.2 Explicit backend checkpoints at each primary page
+PAGE EVENT
+BACKEND CHECKPOINT
+TECH
+S02 Login
+Identity token, tenant roles, session 
+expiry
+Auth adapter + FastAPI RBAC
+I03 Choose application
+Published category, academic year, active 
+submission-stage rules
+PostgreSQL rule catalog
+I04 Edit details
+Schema, current draft revision, historical 
+baseline, change context
+Pydantic + SQLAlchemy + snapshot 
+service
+I05 Checklist
+Resolve required/conditional/due/NA 
+using approved rule-set
+Versioned deterministic rule engine
+I06 Upload
+Byte limits + MIME/magic + malware + 
+parse + quality + jobs
+Storage, PyMuPDF, Pillow/OpenCV, OCR
+I07 Precheck
+Required evidence, expiry and document 
+consistency
+Python rules + field normalizer
+I08 Submit
+Authorized actor + current checks + 
+idempotent atomic revision freeze
+FastAPI transaction + audit outbox
+
+
+=== PAGE 34 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  34
+PAGE EVENT
+BACKEND CHECKPOINT
+TECH
+I09 Status
+Publishable case state, queued 
+processing, allowed actions
+State machine + notification service
+O03 Case overview
+Assignment, full findings and history 
+comparison
+RBAC + history + finding aggregator
+O04 Evidence
+Source spans, PDF preview URL, version 
+relationships
+Private storage + extracted_fields + 
+evidence graph
+O05 Authenticity
+Trusted registry, signature, QR, 
+C2PA/SynthID, inconclusive states
+Issuer gateway + provenance adapters
+O06 Compliance
+Rule evaluation + approved RAG retrieval 
+and citations
+Python rules + pgvector + LLM 
+explanation
+O07 Infrastructure
+Area/room check and inspection task 
+condition
+Room tables + rules + workflow
+O08 Officer action
+Role/case state, rationale, immutable 
+event, notification
+Workflow service + audit events
+A02 Rules
+Source coverage, source version, 
+approved publication and dry run
+Rule registry + test fixture validator
+19. Codex / UI coding implementation brief
+Copy the following brief into a Codex project as the initial UI/implementation instruction alongside this SRS and 
+the v1.1 blueprint. Codex should first implement page shells, permissions, routes and sample data, then connect 
+critical journeys to APIs; design completeness alone is not a working prototype.
+BEGIN CODEX UI/UX PROMPT
+You are the lead product designer and full-stack engineer for URANIUM VERIFY (SIH26261). Read this SRS in full 
+and treat its 33-route page registry, F01-F14 behavior, access matrix, file constraint specification and domain 
+state machines as authoritative project requirements. Read the URANIUM VERIFY v1.1 blueprint and its official 
+references. Do not infer unlisted AICTE form requirements, statutory limits or live integrations.
+Design a professional, accessible, restrained public-sector SaaS interface. Use React + TypeScript + Vite + 
+Tailwind + shadcn/ui; use navy/teal/slate, consistent spacing, visible focus, WCAG 2.2 AA patterns, real keyboard 
+navigation and low-bandwidth-friendly progress states. Do not create a single mega-dashboard containing every 
+feature. Build separate shared, institution, officer and admin shells and exactly the route templates defined in 
+sections 5-8. Make each route fully navigable with breadcrumbs, active sidebar state, meaningful 
+loading/empty/error/success states, and correct role checks.
+Implement the institution six-step application flow: choose category -> institution/request details -> dynamic 
+checklist -> file upload and technical quality validation -> pre-submission validation -> review and submit. Build 
+prior-approved-history timeline and correction inbox as separate pages. After submission, freeze a revision and 
+transition to the officer queue. Officers use separate Overview, Evidence, Authenticity, Compliance, 
+Infrastructure/Inspection and Review pages. Only officers can see full forensic risk and source-check internal 
+details. Shared notifications deep-link only into authorized routes.
+Use FastAPI + PostgreSQL + SQLAlchemy/Pydantic; immutable file versions and historical snapshots. Implement 
+a mock source adapter with clearly visible DEMO/MOCK responses; never claim live AICTE/issuer access. For 
+files, perform extension and size hints in frontend plus authoritative byte-level safety/readability checks in 
+backend, with PDF text extraction and scan OCR. Use configurable demo thresholds and accurate quality 
+warnings. Create synthetic fixtures demonstrating missing documents, expiry, mismatches, legitimate intake 
+changes, infra-room 58/66 m2, issuer mismatch/timeout and no-signal provenance.
+Integrate a deterministic, versioned compliance rule engine. Use RAG only for cited, filtered explanations of 
+approved AICTE handbook passages. Do not let the LLM publish or invent rules or automatically approve/reject 
+
+
+=== PAGE 35 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  35
+an institution. Add C2PA checking and provider-specific SynthID only when actually supported; a not_detected 
+or unavailable result must not be presented as proof of authenticity. Preserve evidence-to-finding-to-officer-
+action lineage with audit logs.
+Milestone order: (0) repository audit, environment and data model; (1) 33 route shells + design system + RBAC; 
+(2) institution EoA workflow + versions; (3) upload/OCR and institution-safe precheck; (4) officer 
+queue/evidence/verification + mock connectors; (5) rule/RAG/infrastructure/forensics thin slices; (6) 
+notifications, report and full E2E testing. After each milestone, run lint/typecheck/tests, report files changed and 
+show exact local run commands. Produce functional code, not merely screenshots and no dummy buttons.
+END CODEX UI/UX PROMPT
+19.1 Proposed repository architecture
+uranium-verify/
+  apps/web/                 React SPA, typed routes, page shells and accessible components
+  services/api/             FastAPI, auth, applications, history, checks, reports
+  services/workers/         OCR, extraction, provenance, connector jobs
+  packages/contracts/      API schemas / OpenAPI-generated client types
+  config/rules/            Approved/demo APH rule fixtures and tests
+  data/fixtures/           Synthetic institutions, certificates and mock issuer registry
+  docs/                    Blueprint, SRS, ADRs, source citations and diagrams
+  infra/                   Docker Compose, migration/init scripts and CI
+  tests/                   Unit, contract, role-scoping and E2E tests
+19.2 Delivery checkpoints for UI
+
+Milestone 1: all 33 pages link correctly; role switching is simulated through authenticated demo users, not 
+an unsecured role toggle; consistent empty and loading states.
+
+Milestone 2: institution can create/resume draft, view history, upload documents, run validation, submit 
+and see status.
+
+Milestone 3: officer opens exact case and evidence; finding clicks reveal file page and rule citation; review 
+action notifies institution.
+
+Milestone 4: actual parsing of synthetic PDFs, one infrastructure rule, one source mock, one supported 
+provenance path and cited limited RAG question.
+
+Milestone 5: automated E2E acceptance cases, accessibility audit, security regression and demo 
+walkthrough.
+20. References, source gaps and change control
+20.1 Official references, standards and research
+[R01] AICTE Approval Process Handbook 2024-2027 (primary regulatory reference). Applicable chapters 
+and Annexures 1-3; page/academic-year checks required.  Open source
+[R02] Press Information Bureau: APH release 2024-2027. Official release and context, not a substitute for the 
+handbook.  Open source
+[R03] Coalition for Content Provenance and Authenticity specification 2.2. Signed media provenance 
+technical definition.  Open source
+[R04] OpenAI Content Provenance API documentation. Provider-specific C2PA/SynthID and limitations for 
+supported media.  Open source
+[R05] W3C WCAG 2.2. Accessibility target for navigation, forms and feedback.  Open source
+[R06] OWASP ASVS 5.0.0. Web application and API security verification baseline.  Open source
+[R07] Supabase Hybrid Search guide. pgvector + full-text hybrid retrieval architecture.  Open source
+
+
+=== PAGE 36 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  36
+[R08] Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020). Conceptual 
+grounding for retrieval-assisted responses.  Open source
+[R09] LayoutLMv3: Pre-training for Document AI. Background on multimodal document understanding; not 
+an MVP training requirement.  Open source
+[R10] OCR-free Document Understanding Transformer (Donut). Alternative research on visual document 
+extraction.  Open source
+[R11] PyMuPDF documentation. Born-digital PDF text, page and image extraction.  Open source
+[R12] Tesseract OCR documentation. Scan OCR runtime and language capability.  Open source
+[R13] FastAPI documentation. API implementation, validation and OpenAPI contracts.  Open source
+[R14] Supabase documentation. Managed Postgres, Auth and private storage implementation choices.  Open 
+source
+[R15] Official c2pa-python repository. Signed Content Credentials validation implementation.  Open source
+[R16] OpenAI Content Provenance public verification tool. Human-facing supported file verification, not a 
+general detector.  Open source
+20.2 Project-provided references
+Project baseline: URANIUM_VERIFY_SIH26261_Master_Blueprint_v1.1.docx/PDF, earlier Team Uranium ideation 
+and phased solution discussions; “Website features and techstackBY AMAN.pdf” (11 pages). The SRS 
+incorporates agreed modules and retains the React/FastAPI/PostgreSQL/Tesseract/OpenCV direction while 
+formalizing UI routes, permission boundaries, rule/RAG responsibility and a safe verification contract.
+20.3 Research versus design assumptions
+TYPE
+EXAMPLES
+TEAM ACTION
+Verified primary reference
+APH clauses, document lists and selected 
+Annexure infrastructure norms
+Store source pages and effective year; 
+review amendments before production.
+Engineering design decision
+33 page templates, route names, interface 
+components, PostgreSQL schema, 
+backend API paths
+Validate with mentor/team; adjust via 
+versioned SRS change.
+Provisional MVP heuristic
+20 MB PDF, 10 MB image, 50 pages, 150 
+DPI target, risk weights
+Tune with test data; do not claim AICTE 
+mandate.
+Permission-dependent integration
+Live AICTE DB access, issuer APIs, official 
+QR registries, provider SynthID access
+Obtain agreements and inspect published 
+APIs before live activation.
+Known uncertain process detail
+Current portal field sequence, approval-
+stage roles and exact upload due stage
+Confirm with official portals/AICTE 
+domain experts before deployment.
+20.4 Change-control workflow
+52. Record change request with user problem, persona, page impact, rule source and privacy implications.
+53. Assign requirement ID and revise role-to-route matrix, APIs/data schema and state machine.
+54. Determine whether new screen is genuinely needed or existing page component suffices; update 33-page 
+count if altered.
+55. Update synthetic fixtures and automated acceptance checks before marking feature complete.
+56. Publish SRS revision with changed sections and approval notes.
+20.5 Final architecture decision record
+Decision D-01: 33 route templates, two principal role experiences (institution and AICTE officer) plus isolated 
+administrator governance and shared pages. Decision D-02: a deterministic regulatory engine using approved, 
+versioned APH rules with retrieval-grounded explanations. Decision D-03: institute history as immutable 
+
+
+=== PAGE 37 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  37
+approved snapshots plus versioned requests. Decision D-04: authenticity as separate issuer verification, signed 
+provenance, watermark and anomaly evidence rather than one binary fake score. Decision D-05: synthetic 
+mock connectors during MVP and permission-controlled real adapters later. Decision D-06: traceable, human-
+controlled officer recommendation and report, never AI final approval.
+20.6 Glossary and implementation sign-off
+TERM
+OPERATIONAL MEANING
+EoA
+Extension of Approval application category; requirements 
+depend on current APH and instructions.
+APH
+AICTE Approval Process Handbook; source of published 
+regulatory conditions.
+Finding
+Recorded observation linked to evidence and a method/rule; not 
+a final regulatory decision.
+Evidence Graph
+Traceable relationships among claims, approved history, files, 
+fields, rules and review actions.
+RAG
+Retrieval-Augmented Generation: source-filtered retrieval 
+supporting grounded explanations.
+C2PA / SynthID
+Signed media provenance and supported watermark signals; 
+not universal forgery-proof checks.
+Approved snapshot
+Historical institute record confirmed as approved by authorized 
+source, separate from a new request.
+MOCK
+Synthetic or simulated source result; must be visually labeled in 
+demo and reports.
+Pre-build sign-off questions: (1) Confirm 33-route navigation count and persona scopes; (2) approve selected EoA 
+category and limited intake-change fixture; (3) confirm demo thresholds are explicitly configurable; (4) agree on 
+permitted issue visibility to institutions; (5) appoint rule-source owners; (6) assign UI, APIs, OCR, regulation, 
+forensics and QA workstreams. Mark unresolved decisions in an ADR before implementing live integrations.
+
+
+=== PAGE 38 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  38
+21. AICTE APH: application catalogue, document rules and field-level 
+specification
+THIS SECTION IS PART OF THE SRS IMPLEMENTATION BASELINE. It translates verifiable portions of the AICTE 
+Approval Process Handbook (APH) 2024-25 to 2026-27 into catalogue entries, document conditions, backend rule 
+contracts and UI behavior. It is NOT a transcription of the live portal form. Source status: VERIFIED = text 
+checked against the published APH; PROPOSED = Team Uranium UI/API schema or validation behavior; REVIEW 
+REQUIRED = application/year-specific interpretation or later amendment must be signed off by a regulatory 
+owner.
+Authoritative reference  AICTE Approval Process Handbook 2024-2027, 
+https://www.aicte.gov.in/sites/default/files/APH%20Final.pdf. Main anchors: Chapter I, Chapter II (including 
+Table 2.3), Chapter VI, Annexures 1-3, relevant affidavits, Formats 2-3 and Architect Certificate 2.
+IMPORTANT  The full handbook applies to academic years 2024-25 through 2026-27, subject to official notices, 
+amendments and category-specific procedure. The system must NOT use a general-purpose LLM to infer 
+whether a document is mandatory, nor treat an officer-stage document as missing at initial submission.
+21.1 Application-type registry and approval-stage routing
+The application selector I03 is driven from approved application_catalog entries, NOT a hardcoded dropdown. 
+Each entry has catalog_id, display_name, institute_type/eligibility, academic_year, rulepack_id, 
+submission_channel, procedural_stages, document_package, ui_status (enabled / preview / external), and 
+approved source. Table 2.3 (APH printed p.30; PDF p.46) separates self-disclosure from scrutiny, expert visit and 
+further review stages.
+APPLICATION / TYPE
+APH LOCATION
+PROCESS ROUTE (HIGH 
+LEVEL)
+PRODUCT AVAILABILITY
+Routine Extension of Approval 
+(EoA) based on self-disclosure
+Chapter II; Annexure 2.1; 
+Table 2.3
+Self-disclosure; document 
+checks as applicable to the 
+current year
+MVP - enabled
+EoA after a break; restoration 
+of intake; hibernation
+Chapter II; Annexure 2.1; 
+Table 2.3
+Scrutiny/re-scrutiny and EVC 
+as applicable; distinct from 
+routine EoA
+Catalog-visible; stage-gated, 
+NOT routine EoA
+Increase in intake / additional 
+courses
+Chapter II clause 2.6; 
+Annexure 2.6; Table 2.3
+Online scrutiny, EVC and 
+onward stage as applicable
+MVP extended demo (limited)
+New programme / level in 
+existing institution
+Chapter II; Annexure 2.3; 
+Table 2.3
+Scrutiny, EVC and further 
+stage as applicable
+Catalog-visible; 
+limited/preview
+Change of site/location
+Annexure 2.3; Annexure 1 
+cross-reference
+Scrutiny and EVC as 
+applicable; Annexure 1 
+expanded records
+Catalog-visible; 
+limited/preview
+Change of institution name
+Annexure 2.10; Table 2.3
+Scrutiny; 
+NOC/acknowledgment and 
+resolution
+Catalog-visible; 
+limited/preview
+Change of affiliating 
+university/board name
+Annexure 2.11; Table 2.3
+Scrutiny; case-specific 
+NOC/acknowledgment and 
+resolution
+Catalog-visible; 
+limited/preview
+Change of bank details
+Annexure 2.12; Table 2.3
+Scrutiny; affidavit, resolution 
+and bank-merger proof if 
+relevant
+Catalog-visible; 
+limited/preview
+Course name change/merger, 
+reduction in intake, course 
+closure
+Annexure 2.9; Table 2.3
+Scrutiny; category-specific 
+conditions
+Catalog-visible; preview
+Institutional merger / 
+conversion / closure
+Annexure 2.4 / 2.7 / 2.8; Table 
+2.3
+Distinct document sets and 
+often scrutiny/EVC
+Catalog-visible; preview
+
+
+=== PAGE 39 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  39
+APPLICATION / TYPE
+APH LOCATION
+PROCESS ROUTE (HIGH 
+LEVEL)
+PRODUCT AVAILABILITY
+New technical institution
+Chapter I; Annexure 1
+Dedicated new-institution 
+approval; external NSWS 
+pathway specified for 2026-27 
+public notice
+External guidance / 
+integration future; not a fake 
+EoA form
+ODL/online and specialized 
+approvals
+Chapter V / Annexure 2 where 
+applicable
+Separate regulations, checklist 
+and procedure
+Future; not eligible for generic 
+default checklist
+The table lists representative supported/preview categories, not every APH approval category. For a complete production 
+catalogue, assign each APH Table 2.3 row and its applicable Annexure to a reviewed catalog entry; do not enable incomplete 
+rule packs. 2026-27 public notice advises new technical institutions to apply through National Single Window System (NSWS), 
+whereas existing institution approval paths are processed on AICTE infrastructure (subject to official instructions). Source: 
+https://dteapengg.in/Documents/NOTIFICATIONS/AICTE%20Approval%20Process%202026-
+27_Fair%20Copy%20and%20Public%20notice%20for%20approval%20process%202026-27%20Merged_20251201_044937.pdf
+21.2 Annexure 2.1: EoA document requirement register (VERIFIED)
+For the published baseline, Annexure 2.1 (APH printed p.81; PDF p.97) gives the following document 
+requirements for EoA based on self-disclosure/after a break/restoration, with the following critical conditions. 
+The MVP should implement this exact source-backed set as an editable, reviewed rule package, keeping other 
+APH exceptions and subsequent notices in scope.
+RULE ID / DOCUMENT
+APPLICABILITY & DUE 
+STAGE
+FIELDS TO EXTRACT / 
+CHECK
+USER-FACING STATUS
+EOA-D01 - Affidavit 2
+EoA package; as prescribed in 
+Annexure 2.1
+Institute and 
+trust/society/company name, 
+declarant, 
+signature/attestation, 
+applicant identifier, declared 
+academic year where shown
+Missing / unreadable / field 
+discrepancy / ready for review
+EOA-D02 - AICTE payment 
+receipt
+If any, for relevant academic 
+year
+Portal receipt/reference, 
+payee, amount/reference and 
+academic year where 
+provided
+Required only when rule 
+resolves applicable; otherwise 
+N/A
+EOA-D03 - 
+occupancy/completion 
+certificate / building license / 
+Form D
+Applicable alternative 
+evidence from competent 
+authority; see APH clause 7.17
+Building/site identity, 
+authority, certificate number, 
+issuance/validity, relevant 
+approved building
+Accept ONE appropriate 
+alternative, not all four
+EOA-D04 - structural stability 
+certificate
+Required when building >30 
+years from issue of 
+Completion Certificate
+Completion issue date, 
+structural engineer 
+registration where available, 
+building ID, certificate 
+date/status
+Conditional; show why 
+triggered or why not 
+applicable
+EOA-D05 - valid Fire Safety 
+Certificate
+Valid document from 
+competent authority
+Building/address, issuing 
+authority, issue/expiry, 
+certificate/reference ID
+Missing / expired / pending 
+issuer check
+EOA-D06 - satellite location 
+map
+Map showing land geo-
+location; latitude/longitude at 
+main entrance
+Coordinates, main 
+building/campus label, 
+consistency with institute 
+address
+Missing coordinates / 
+unreadable / inconsistency
+EOA-D07 - audited account 
+statement
+Previous year statement of 
+accounts for 
+Trust/Society/Company
+Organization identity, 
+accounting period/year, 
+authentication/attestation 
+where identifiable
+Missing / wrong period / 
+review required
+
+
+=== PAGE 40 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  40
+Additional source-specific exception: for buildings constructed by Government Departments that are older than 
+50 years and original documents cannot be submitted, Annexure 2.1 describes a competent-authority letter 
+covering building norms. Encode as an explicit reviewed exception, NOT automatic universal waiver. The 
+document authenticity requirement for supporting records and authorized signatory differs for self-financing 
+versus government/government-aided institutions; handle via institution_type and approved signer role.
+21.3 Annexures 2.3 / 2.6 / 2.10: differentiated change applications
+TYPE / APH REFERENCE
+STAGE AND DOCUMENTS
+KEY CONTEXT FIELDS / REQUIRED 
+CHECKS
+Increase in intake / additional courses - 
+Annexure 2.6, printed p.82
+At online Scrutiny: Affidavit 8 (not 
+applicable for Extended EoA); proof of 
+Ph.D./Fellow faculty only for introduction 
+of Fellow Programme in Management; 
+Trust/Society/Company Format 3 
+resolution for additional course/division 
+and land/building/funds.
+Previous approved intake; proposed 
+intake; programme/course/level; 
+available divisions; stated faculty; usable 
+rooms/labs; valid Affidavit 8 applicability 
+flag.
+Change of site / location - Annexure 2.3, 
+printed p.81
+At scrutiny: Annexure 1 documents for 
+site changes, affiliating university/board 
+NOC in Format 2, and organizational 
+resolution in Format 3.
+Old approved address; proposed new 
+address; land/building identity; NOC 
+authority; approved plans; do not call 
+new address an automatic mismatch.
+New programme / level / listed 
+conversions - Annexure 2.3
+NOC and organization resolution are 
+listed as applicable; Chapter II and Table 
+2.3 control stages, with Annexure 1 
+documents specifically called for on 
+site/location change.
+Program and level; legacy approved 
+programme data; affiliating 
+university/board; proposed resources.
+Change of institution name - Annexure 
+2.10, printed p.83
+At scrutiny: affiliating university/board 
+NOC in Format 2 OR official 
+acknowledgment/receipt of submission; 
+organizational Format 3 resolution.
+Old approved name, new proposed name, 
+organization resolution identity, 
+acknowledgment/NOC reference.
+An increase of intake from 60 to 120 is a legitimate requested difference; the historical comparison should 
+record APPROVED_OLD=60 and REQUESTED_NEW=120 rather than treating the change itself as fraud. 
+Compliance checks instead evaluate relevant supporting evidence and formal rules for the requested increase.
+21.4 Annexure 1: new-institution evidence and why its page flow is different
+Annexure 1.1 (APH printed p.77 onward, PDF p.93 onward) describes evidence to be uploaded/submitted/shown 
+at Scrutiny/Re-Scrutiny for setting up a new technical institution. Important items include the approved 
+building plan and Architect Certificate 2, Affidavit 2, Format 3 organizational resolution, 
+occupancy/completion/building evidence as applicable, valid fire certificate, Bank Manager Certificate 3, 
+organization registration documents and applicable land ownership/lease evidence. The Annexure has case-
+specific provisions for Section 8 companies, PGDM boards, PPP/BOT, private lease and more; later sections cover 
+EVC items such as equipment/library records and facility video.
+For 2026-27, the published approval-process public notice directs NEW institutions to NSWS. Therefore I03 
+should show “New Technical Institution - Official external process / future integration,” a concise checklist 
+preview and a sourced link, not present a fully working internal new-institution submission as if it were official. 
+A new user without an existing AICTE PID can be guided to the relevant public process without granting 
+fabricated portal status.
+21.5 Canonical field schema: documents versus application form
+The following proposed schema is sufficient to build I04/I05/I06 and the verification engine; it is NOT an 
+asserted copy of current AICTE web-portal fields. Every field has field_id, type, required_condition, 
+editable_phase, provenance_source, confidence, normalized_value, evidence_ref and effective year.
+
+
+=== PAGE 41 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  41
+ENTITY / FORM GROUP
+MINIMUM FIELDS (PROPOSED)
+SOURCE-OF-TRUTH AND MATCH
+Institution identity
+PID (existing institution), institution 
+name, type, full campus address, state, 
+district, affiliation, trust/society/company 
+ID
+Historical approved AICTE record (when 
+authorized); uploaded certificates; 
+application input
+Application request
+academic_year, application_type, 
+requested changes, channel, phase, 
+payment reference if applicable, attested 
+by
+Approval-process catalogue; user 
+declaration; officer-confirmed record
+Programme/course/intake
+programme, level, course code/name, 
+previously approved intake, requested 
+intake, divisions and duration
+Previous approval snapshot vs request; 
+rule package
+Building/land
+campus/building IDs, completion 
+certificate date, occupancy/license ID, 
+land/map coordinates, recognized 
+authority, constructed age
+Completed historical documents, 
+approved plans, government/issuer 
+evidence
+Room/infrastructure
+room ID, room type, department, carpet 
+area m2, floor, readiness, source 
+document/page, plan revision
+Architect Certificate 2 room schedule; 
+portal declaration; applicable APH norms
+Faculty
+department, programme/course, 
+qualification category, count, 
+appointment/capacity evidence, selected 
+role
+Institution declaration + authorized 
+faculty evidence; privacy-limited officer 
+use
+Certificate record
+type, issuer, certificate ID, issue date, 
+expiry date if given, property covered, 
+file_sha256, c2pa state
+Original uploaded file, trusted issuer 
+response, PDF signature/certificate 
+metadata
+Officer finding
+finding ID, kind, observation, evidence 
+refs, APH clause/version, source check, 
+review state, officer rationale
+Deterministic rule result + authorized 
+source responses + human-reviewed 
+outcome
+21.6 APH infrastructure facts and rule execution
+Annexure 3 (APH printed p.86 onward, PDF p.102 onward) defines land and built-up area requirements; 
+Annexure 3.2 and 3.2.1 distinguish instructional (INA), administrative (ADA), amenities (AMA) and 
+access/circulation areas. For the Engineering & Technology row, Annexure 3.2.1 lists a classroom carpet area of 
+66 square metres for a 60-student division and 33 square metres for a 30-student division, and other category-
+specific room norms. Do not apply these values to MBA, Design, Planning, PGDM or unrelated programmes.
+EVIDENCE
+APPLICABLE LOGIC
+FLAG / REVIEW RESULT
+Room C101: submitted area 75 m2; 
+approved architect schedule area 58 m2
+For verified Engineering and 
+Technology / division of 60 row, select 
+minimum 66 m2. Compare declared and 
+certified values; verify plan revision and 
+room mapping.
+Factual mismatch: 17 m2; potential 
+deficiency: 8 m2 against selected 
+minimum; route to officer.
+Building completion certificate issued 
+1990-01-01; target reference date 2026-06-
+01
+More than 30 years since completion 
+certificate issue; EoA Annexure 2.1 
+trigger applies, subject to exceptions.
+Structural stability document is required 
+under that condition or an authorized 
+exception case must be reviewed.
+Fire safety document no current validity 
+evidence
+Require APH-specific valid fire safety 
+proof; evaluate actual validity dates and 
+source status.
+Expired if reliable date clearly fails; 
+otherwise source verification / manual 
+review.
+Proposed intake increases but actual 
+lab/room inventory is incomplete
+Chapter II 2.6 and relevant Annexure 3/VI 
+norms; match requested course and 
+intake before rule evaluation.
+Insufficient evidence; targeted room/lab 
+inspection recommendation, not 
+automatic rejection.
+
+
+=== PAGE 42 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  42
+EVIDENCE
+APPLICABLE LOGIC
+FLAG / REVIEW RESULT
+Site change uses newly proposed address
+Purpose-aware record compare: old 
+approved campus vs proposed new 
+campus; NOC and location documents are 
+specifically relevant.
+Change declared and tracked; do not 
+raise institution identity mismatch solely 
+because address changed.
+ALGORITHM: rule selector filters by rulepack status=published, academic year, application type, programme, 
+approval stage and exception conditions. Check documentary provenance first; if required evidence is 
+unreadable, return INSUFFICIENT_EVIDENCE. Run deterministic numeric/date/requiredness checks only on 
+sufficiently reliable fields. Save source clause, rule version, operands, outputs and named exceptions for each 
+result. RAG may retrieve a clause explanation and cite it; it may NOT calculate requirement thresholds without 
+an approved rule.
+21.7 Direct mapping to the 33-page information architecture
+PAGE
+APH-DRIVEN UI / CONTENT
+BACKEND CONTRACT
+I03 - Choose Application Type
+Separate cards for routine EoA, intake 
+increase, new programme, site change, 
+new institute; show availability and 
+official channel.
+GET /catalog/applications?year=... -> 
+eligibility, stage, rulepack and approved 
+source.
+I04 - Institution & Request Details
+Prefilled approved identity and intake; 
+dynamic category-specific fields; visual 
+separation of historical/current/proposed.
+GET history snapshot; POST draft with 
+application_type and proposed changes.
+I05 - Dynamic Document Checklist
+Exactly applicable Annexure document 
+cards; mandatory/conditional/not-
+applicable; due stage and APH reference; 
+reason for trigger.
+GET /applications/{id}/requirements 
+produces versioned evaluated checklist.
+I06 - Documents & Uploads
+Document-slot uploads with size/quality 
+results; alternatives such as occupancy 
+OR completion; PDF/image preview and 
+source metadata.
+POST upload; asynchronous 
+MIME/safety/page/quality checks; 
+document version entry.
+I07 - Pre-submission Validation
+Institution-safe missing and correction 
+guidance; source-backed findings without 
+sensitive forensic signals.
+POST precheck runs stage-appropriate 
+gate and factual checks.
+I08 / I09 - Review, Submit and Status
+Show what has been submitted, what is 
+due at later stage, historical link and 
+locked submission revision.
+Submission snapshot + audit + 
+notification + queue event.
+O03/O04 - Case Overview and Evidence
+Source file, extracted field with page, 
+historical approved record and 
+application change.
+Authorized evidence graph traversal, 
+immutable document snapshots.
+O05 - Authenticity
+Issuing-authority, QR/digital signature, 
+provenance signals and 
+pending/unavailable states separated.
+Authenticated issuer adapters, C2PA 
+verifier and audit.
+O06 - Compliance
+Clause-linked applicable rules, rule pack 
+and evidence operands; no black-box 
+pass/fail.
+Deterministic rules + approved-source 
+RAG explanation.
+O07 - Infrastructure
+Room/infrastructure worksheets and 
+source plan comparison; recommend 
+focused inspection.
+Rule evaluation by programme/intake + 
+evidence gaps.
+A02 - Rule Library
+APH category > Annexure > rule ID > 
+conditional logic > approved version > 
+stage > synthetic tests.
+Rule publishing permissions, approval 
+workflow and immutable version.
+A05 - Knowledge Manager
+Official APH plus approved amendments, 
+citations, effective-date metadata; 
+superseded source warning.
+Metadata-filtered RAG ingestion/retrieval; 
+editorial approval.
+
+
+=== PAGE 43 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  43
+21.8 Backend configuration contract for APH requirements
+Store each requirement as a structured object. Minimal recommended fields: requirement_id, 
+official_source_url, printed_page, pdf_page, clause_id, rulepack_version, application_types, eligibility_predicate, 
+document_type, acceptable_alternatives, stage_due, mandatory_if, applicable_exceptions, validity_rule, 
+field_schema, verification_policy, evidence_requirement, published_at, reviewer_id, supersedes, and 
+fixture_tests.
+Proposed example configuration (not an official rule publication):
+{
+  "requirement_id": "APH2427-EOA-STRUCTURE-01",
+  "source_clause": "Annexure 2.1(iv)",
+  "rulepack_version": "draft-2026-27-review",
+  "application_types": ["EOA"],
+  "document_type": "structural_stability_certificate",
+  "stage_due": "eoa_document_check",
+  "mandatory_if": "building_age_from_completion_gt_30_years",
+  "status": "DRAFT_UNTIL_APPROVED",
+  "missing_result": "MISSING_CONDITIONAL_DOCUMENT"
+}
+Implementation MUST use safe, typed predicate operators (not eval on arbitrary admin-authored text). Every 
+document file is attached to a specific checklist slot, and the server enforces acceptable alternatives and stage-
+specific submission gates. File-size limits and image DPI/blur heuristics are independent engineering 
+configuration, NOT APH regulatory thresholds.
+21.9 APH-aware statuses, notifications and permissions
+CONDITION
+INSTITUTION DISPLAY
+OFFICER / ADMIN DISPLAY
+Mandatory document due at submission 
+is missing
+Cannot complete applicable stage; show 
+needed evidence and clause
+Incomplete at submission (or controlled 
+deficiency if imported case)
+Document due only at scrutiny/EVC
+Not yet due; clear informational note
+Task generated when relevant official 
+workflow stage begins
+Required certificate has illegible ID or no 
+readable expiry
+Needs reupload / review; show failed 
+field and remediation
+Source uncertainty; do not assert forged 
+or expired
+Document/approved record mismatch
+Show correctable factual mismatch if 
+disclosure permitted
+Full claim-to-evidence graph + scope of 
+divergence
+Issuer cannot be reached
+Submitted; authority verification pending
+Pending/timeout/retry queue, no 
+automatic fraud accusation
+AI-origin signal detected in uploaded 
+image
+Show neutral provenance clarification if 
+permitted
+Detailed detector provenance, 
+confidence/coverage and evidence
+APH rule updated while draft is open
+Notice: regulation version change; 
+recompute draft with audit
+Admin rule migration history and 
+regression results
+Proposed site/intake change differs from 
+approved history
+Show previous value and proposed value 
+as expected change
+Flag ONLY unsupported or internally 
+contradictory claims
+21.10 APH-focused MVP fixtures, validation tests and sign-off
+57. Seed routine EoA mock case with seven Annexure 2.1 slots and alternatives; mark payment receipt 
+conditional and structural certificate conditional on building age, with an explicit exception test.
+58. Seed one 2026-27 EoA institution having past EoA letters, last approved course/intake, historical document 
+versions and previous officer findings; new request must preserve prior approved state.
+
+
+=== PAGE 44 ===
+TEAM URANIUM  /  SIH26261  /  SOFTWARE REQUIREMENTS SPECIFICATION
+URANIUM VERIFY  •  SRS v1.1  •  Working specification  |  44
+59. Provide one Annexure 2.6 intake increase request with previous intake 60, requested intake 120, valid 
+organizational resolution, and an Affidavit 8 case where it applies; test an Extended EoA exemption 
+separately.
+60. Provide one site-change case with NOC and Annexure 1 requirements preview; verify the address 
+difference is stored as a proposed change, not assumed forgery.
+61. Provide one new-institution information page with official NSWS guidance and NO falsely functioning local 
+submission to government systems.
+62. Provide an engineering classroom fixture 75 m2 declared / 58 m2 certified / 66 m2 rule, producing two 
+independently traceable findings and a targeted review suggestion.
+63. Seed an issuer registry result VERIFIED, one CONFLICT and one SOURCE_UNAVAILABLE; institution-facing 
+wording and officer details differ according to role.
+64. Index reviewed APH Annexure 2.1, Annexure 2.6 and Annexure 3.2.1 sections in RAG with page and 
+effective-year filters. An uncited or superseded passage must not be treated as a controlling rule.
+65. Every synthetic sample/document must have clear MOCK label; verify no third-party AICTE or issuer access 
+is represented as production.
+66. Before go-live, require an AICTE/domain expert sign-off on official checklist applicability, exceptions, latest 
+amendments, current portal fields and role workflow; freeze approved rulepack checksum.
+Rule-owner verification gate  A02 Rule Library must show WHO reviewed the regulatory interpretation, 
+WHEN it was approved, which source and clause were used, which fixtures passed, and the earliest valid 
+academic year. Only approved versions may affect regulatory findings.
+21.11 Direct APH hyperlinks and cited implementation anchors
+[APH-01] AICTE APH 2024-2027 official PDF: Annexure 2.1 / EoA, printed p.81, PDF p.97.  Open primary 
+source
+[APH-02] APH Annexure 2.6 / intake increase and added courses, printed p.82, PDF p.98.  Open primary 
+source
+[APH-03] APH Annexure 2.3 / site change and new programme/level, printed p.81, PDF p.97.  Open primary 
+source
+[APH-04] APH Annexure 1 / new institution evidence, printed p.77 onward, PDF p.93 onward.  Open 
+primary source
+[APH-05] APH Chapter II Table 2.3 / routing stages, printed p.30, PDF p.46.  Open primary source
+[APH-06] APH Annexure 3.2.1 / instructional area norms, printed p.87, PDF p.103.  Open primary source
+[APH-07] APH Architect Certificate 2 / certified room information, printed p.212, PDF p.228.  Open primary 
+source
+[APH-08] Approval Process 2026-27 public notice copy at Andhra Pradesh technical education domain.  
+Open primary source
+[APH-09] AICTE main website: verify new corrigenda, notices and academic calendar.  Open primary 
+source
+Note on page references: the PDF index includes introductory pages, so printed handbook page and PDF viewer 
+page differ. The precise PDF page can shift if AICTE re-publishes the file. Rule records should identify BOTH 
+printed page and document checksum, not rely on page numbers alone.

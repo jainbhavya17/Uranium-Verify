@@ -1,0 +1,8 @@
+"""Worker entry point that works from a fresh checkout without PYTHONPATH configuration."""
+
+import runpy
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "services/api"))
+runpy.run_module("uranium.worker", run_name="__main__")

@@ -1,0 +1,126 @@
+{
+  "interpretation_status": "SRS_TRANSCRIBED_DEMO_NOT_OFFICIALLY_APPROVED",
+  "source_url": "https://www.aicte.gov.in/sites/default/files/APH%20Final.pdf",
+  "srs_version": "1.1 / 26 October 2026 / section 21",
+  "rules": [
+    {
+      "code": "EOA-D01",
+      "category": "EOA",
+      "label": "Affidavit 2",
+      "stage": "SUBMISSION",
+      "alternatives": ["AFFIDAVIT_2"],
+      "condition": { "op": "always" },
+      "clause": "Annexure 2.1 / Affidavit 2",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "EOA-D02",
+      "category": "EOA",
+      "label": "AICTE payment receipt, if applicable",
+      "stage": "SUBMISSION",
+      "alternatives": ["PAYMENT_RECEIPT"],
+      "condition": { "op": "eq", "field": "payment_applicable", "value": true },
+      "clause": "Annexure 2.1 / relevant-year receipt, if any",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "EOA-D03",
+      "category": "EOA",
+      "label": "Occupancy / completion / building evidence",
+      "stage": "SUBMISSION",
+      "alternatives": ["OCCUPANCY", "COMPLETION", "BUILDING_LICENSE", "FORM_D"],
+      "condition": { "op": "always" },
+      "clause": "Annexure 2.1; clause 7.17 alternatives",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "EOA-D04",
+      "category": "EOA",
+      "label": "Structural stability certificate",
+      "stage": "SUBMISSION",
+      "alternatives": ["STRUCTURAL_STABILITY"],
+      "condition": { "op": "eq", "field": "structural_over_30", "value": true },
+      "clause": "Annexure 2.1(iv) / completion-certificate age condition",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "EOA-D05",
+      "category": "EOA",
+      "label": "Valid Fire Safety Certificate",
+      "stage": "SUBMISSION",
+      "alternatives": ["FIRE_SAFETY"],
+      "condition": { "op": "always" },
+      "clause": "Annexure 2.1 / fire safety",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "EOA-D06",
+      "category": "EOA",
+      "label": "Satellite location map",
+      "stage": "SUBMISSION",
+      "alternatives": ["SATELLITE_MAP"],
+      "condition": { "op": "always" },
+      "clause": "Annexure 2.1 / main-entrance coordinates",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "EOA-D07",
+      "category": "EOA",
+      "label": "Previous-year audited accounts",
+      "stage": "SUBMISSION",
+      "alternatives": ["AUDITED_ACCOUNTS"],
+      "condition": { "op": "always" },
+      "clause": "Annexure 2.1 / previous-year Trust/Society/Company accounts",
+      "printed_page": 81,
+      "pdf_page": 97
+    },
+    {
+      "code": "INTAKE-D01",
+      "category": "INTAKE_INCREASE",
+      "label": "Affidavit 8",
+      "stage": "SCRUTINY",
+      "alternatives": ["AFFIDAVIT_8"],
+      "condition": {
+        "op": "not",
+        "conditions": [{ "op": "eq", "field": "extended_eoa", "value": true }]
+      },
+      "clause": "Annexure 2.6 / Extended EoA exemption",
+      "printed_page": 82,
+      "pdf_page": 98
+    },
+    {
+      "code": "INTAKE-D02",
+      "category": "INTAKE_INCREASE",
+      "label": "Ph.D./Fellow faculty evidence for Fellow Programme in Management",
+      "stage": "SCRUTINY",
+      "alternatives": ["FELLOW_FACULTY"],
+      "condition": {
+        "op": "all",
+        "conditions": [
+          { "op": "eq", "field": "programme", "value": "Management" },
+          { "op": "eq", "field": "level", "value": "FELLOW" }
+        ]
+      },
+      "clause": "Annexure 2.6 / Fellow Programme in Management only",
+      "printed_page": 82,
+      "pdf_page": 98
+    },
+    {
+      "code": "INTAKE-D03",
+      "category": "INTAKE_INCREASE",
+      "label": "Organization resolution in Format 3",
+      "stage": "SCRUTINY",
+      "alternatives": ["FORMAT_3"],
+      "condition": { "op": "always" },
+      "clause": "Annexure 2.6 / additional course/division, land/building/funds resolution",
+      "printed_page": 82,
+      "pdf_page": 98
+    }
+  ]
+}

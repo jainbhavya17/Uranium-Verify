@@ -1,0 +1,67 @@
+.evidence-split {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+.page-region-view {
+  position: relative;
+}
+.page-region-view img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.page-region-view svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.page-region-view rect {
+  fill: #fbbf2440;
+  stroke: #b45309;
+  stroke-width: 2;
+}
+.observation-row {
+  padding-block: 16px;
+  border-bottom: 1px solid #cbd5e1;
+  overflow-wrap: anywhere;
+}
+.review-case-list {
+  display: grid;
+  gap: 16px;
+}
+.review-case-list article {
+  padding: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+.evidence-split pre,
+.card pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 400px;
+  overflow: auto;
+}
+.details > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .evidence-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.audit-export-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  max-width: 100%;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border: 1px solid #64748b;
+  border-radius: 6px;
+  white-space: normal;
+}
