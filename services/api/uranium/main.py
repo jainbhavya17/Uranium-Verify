@@ -41,7 +41,7 @@ from .models import (
     PreviewTicket,
     User,
 )
-from .storage import LocalPrivateStorage
+from .supabase_storage import storage_for_settings
 
 
 def create_app(settings=None):
@@ -49,7 +49,7 @@ def create_app(settings=None):
     settings.validate()
     engine = make_engine(settings.database_url)
     factory = session_factory(engine)
-    storage = LocalPrivateStorage(settings.storage_root)
+    storage = storage_for_settings(settings)
     from .processing_config import ProcessingPolicy
 
     policy = ProcessingPolicy()
@@ -232,7 +232,7 @@ def create_app(settings=None):
         except SQLAlchemyError:
             raise HTTPException(503, "Database unavailable or migration missing.")
         return envelope(
-            request, HealthView(status="ok", database="ready", storage="private-local").model_dump()
+            request, HealthView(status="ok", database="ready", storage=getattr(storage, "adapter_name", "private-local")).model_dump()
         )
 
     @app.post("/api/v1/auth/session", response_model=Envelope[UserView])
