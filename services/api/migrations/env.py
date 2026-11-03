@@ -1,6 +1,6 @@
 from alembic import context
 from sqlalchemy import create_engine, event
-
+from uranium.db import make_engine
 from uranium.config import Settings
 from uranium.models import Base
 
@@ -14,7 +14,7 @@ def run():
         with context.begin_transaction():
             context.run_migrations()
         return
-    engine = create_engine(url)
+    engine = make_engine(url)
     if url.startswith("sqlite"):
 
         @event.listens_for(engine, "connect")
