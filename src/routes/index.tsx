@@ -28,12 +28,9 @@ import {
 } from "@/components/ui/dialog";
 import { userHome, useCurrentUser } from "@/lib/backend-session";
 import { usePortalContent } from "@/lib/portal-content";
-import { seo } from "@/lib/seo";
+import { seo, SITE_DESCRIPTION } from "@/lib/seo";
 export const Route = createFileRoute("/")({
-  head: seo(
-    "Uranium Verify",
-    "A connected workspace for AICTE applications, documents, review queries, and approval progress.",
-  ),
+  head: seo("Uranium Verify", SITE_DESCRIPTION),
   component: Home,
 });
 const benefits = [

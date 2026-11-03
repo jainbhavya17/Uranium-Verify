@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { BackendSessionProvider } from "@/lib/backend-session";
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/lib/seo";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -73,11 +74,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "URANIUM VERIFY - AICTE Application Validation & Compliance System" },
+      { title: SITE_TITLE },
       {
         name: "description",
-        content:
-          "AICTE system for validation of institution applications, document authentication and compliance verification.",
+        content: SITE_DESCRIPTION,
       },
     ],
     links: [
