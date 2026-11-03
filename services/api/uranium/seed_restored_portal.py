@@ -370,7 +370,7 @@ def seed_restored_portal(db, storage):
             db.add(record)
             db.flush()
             content = pdf_document(DOCUMENTS[kind][0], inst, details, case.id + "-" + doc["code"], kind)
-            key = hashlib.sha256(("portal-original:" + case.id + kind).encode()).hexdigest()
+            key = hashlib.sha256(content).hexdigest()
             storage.write_once(key, content)
             version = DocumentVersion(
                 id=fixture_id(case.id + kind + "-v1"),
@@ -606,7 +606,7 @@ def seed_restored_portal(db, storage):
             "RESP-DEF-0931",
             "AUDITED_ACCOUNTS",
         )
-        key = hashlib.sha256(b"restored-financial-response").hexdigest()
+        key = hashlib.sha256(content).hexdigest()
         storage.write_once(key, content)
         v = DocumentVersion(
             id=fixture_id("DEF-0931-financial-v2"),

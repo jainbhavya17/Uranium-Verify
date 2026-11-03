@@ -8,7 +8,7 @@ from .config import Settings
 from .db import make_engine, session_factory
 from .processing import run_one
 from .processing_config import ProcessingPolicy
-from .storage import LocalPrivateStorage
+from .supabase_storage import storage_for_settings
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     policy.validate(settings.environment)
     engine = make_engine(settings.database_url)
     factory = session_factory(engine)
-    storage = LocalPrivateStorage(settings.storage_root)
+    storage = storage_for_settings(settings)
     from .notifications import dispatch_one
     from .reports import run_report_one
 

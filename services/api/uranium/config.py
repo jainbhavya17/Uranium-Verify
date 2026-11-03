@@ -14,8 +14,12 @@ def load_local_environment():
                 if key.strip() in {
                     "APP_ENV",
                     "AUTH_ADAPTER",
-                    "DATABASE_URL",
+                    "DATABASE_URL","DATABASE_SCHEMA",
                     "STORAGE_ROOT",
+                    "STORAGE_BACKEND",
+                    "SUPABASE_URL",
+                    "SUPABASE_SECRET_KEY",
+                    "SUPABASE_STORAGE_BUCKET",
                     "DEMO_PASSWORD",
                     "PHASE4_DEMO_PASSWORD",
                     "LOCAL_RECOVERY_PREVIEW",
