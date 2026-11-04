@@ -36,9 +36,26 @@ describe("bounded session connection retries", () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(
       "https://synthetic.onrender.com/health",
-      expect.objectContaining({ credentials: "omit", cache: "no-store" }),
+      expect.objectContaining({ credentials: "omit", cache: "no-store", mode: "no-cors" }),
     );
     await vi.advanceTimersByTimeAsync(0);
+  });
+
+  it("allows a direct warm-up to continue beyond the session-attempt timeout", async () => {
+    const { connection, fetcher } = await setup();
+    let signal: AbortSignal | null | undefined;
+    fetcher.mockImplementation((_url, options) => {
+      signal = options?.signal;
+      return new Promise((_resolve, reject) => {
+        signal?.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")));
+      });
+    });
+    connection.warmUp();
+    await vi.advanceTimersByTimeAsync(10000);
+    expect(signal?.aborted).toBe(false);
+    await vi.advanceTimersByTimeAsync(80000);
+    expect(signal?.aborted).toBe(true);
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it("waits ten seconds and retries a gateway error, then clears the waiting state", async () => {

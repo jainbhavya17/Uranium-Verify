@@ -7,6 +7,7 @@ export const apiUrl = (path: string) => `${API_BASE_URL}/${path.replace(/^\/+/, 
 
 const GATEWAY_ERRORS = new Set([502, 503, 504]);
 const ATTEMPT_TIMEOUT = 10000;
+const WARM_UP_TIMEOUT = 90000;
 const listeners = new Set<() => void>();
 const retrying = new Set<symbol>();
 export const getConnectionWaiting = () => retrying.size > 0;
@@ -25,9 +26,12 @@ let firstLoadWarmed = false;
 function wakeBackend() {
   if (typeof window === "undefined" || warmRequest) return;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), ATTEMPT_TIMEOUT);
+  const timer = setTimeout(() => controller.abort(), WARM_UP_TIMEOUT);
   warmRequest = fetch(`${API_URL}/health`, {
     method: "GET",
+    // This public request only triggers startup; its opaque response is ignored.
+    // Preview origins need not read Render's response to initiate the request.
+    mode: "no-cors",
     credentials: "omit",
     cache: "no-store",
     signal: controller.signal,

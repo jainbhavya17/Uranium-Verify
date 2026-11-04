@@ -19,7 +19,9 @@ The existing `/api/v1/health` still reports database/migration readiness and can
 
 CORS allows explicit configured origins with credentials, required methods and the CSRF header. Authentication, sample credentials, cookie flags, institution/assignment checks and CSRF logic are retained. CORS is not permission to read an institution's records.
 
-`warmUp()` makes one non-blocking public GET when the browser app mounts. It omits cookies, catches errors, and cancels its own request after ten seconds. If a later session request encounters a gateway/network failure, it can initiate another deduplicated direct wake-up request. This is traffic triggered by opening/using the site, not an endless browser keepalive timer.
+`warmUp()` makes one non-blocking public GET when the browser app mounts. It omits cookies, catches errors, and allows the direct request up to 90 seconds. It uses `mode: "no-cors"` because this request only initiates startup and never reads the opaque response; authenticated requests continue through the same-origin proxy. If a later session request encounters a gateway/network failure, it can initiate another deduplicated direct wake-up request. This is traffic triggered by opening/using the site, not an endless browser keepalive timer.
+
+The first deployed idle test exhausted its retries. Inspection found that the original direct warm-up was cancelled after only ten seconds. The longer direct-request budget and response-independent mode are a follow-up correction; successful idle recovery still needs a deployed test. They are not proof of the exact underlying Render routing behavior.
 
 `fetchWithRetry(url, options, tries=6, delay=10000)` retries network errors and HTTP 502/503/504. A request has a ten-second timeout, waits ten seconds between attempts, and honors caller cancellation. There are at most six attempts; if every attempt stalls, the total budget can approach 110 seconds. Consequently the UI says a minute **or longer**, rather than promising an exact 60-second deadline.
 
@@ -52,7 +54,7 @@ Add:
 CORS_ALLOWED_ORIGINS=https://uraniumverify.vercel.app,http://localhost:5174,http://127.0.0.1:5174,http://localhost:5184,http://127.0.0.1:5184
 ```
 
-For a particular Vercel Preview URL, append its exact HTTPS origin to this comma-separated list when testing direct warm-up. No paths, quotes or wildcard origins. The code supplies the stable production origin and common local ports as defaults when this setting is absent.
+For any feature that needs to **read** a direct API response from a particular Vercel Preview URL, append its exact HTTPS origin to this comma-separated list. The fire-and-forget public warm-up does not need to read that response. No paths, quotes or wildcard origins. The code supplies the stable production origin and common local ports as defaults when this setting is absent.
 
 Keep existing `DATABASE_URL`, `DATABASE_SCHEMA`, `APP_ENV`, `AUTH_ADAPTER`, `COOKIE_SECURE=true`, `STORAGE_BACKEND`, Supabase storage settings and other working server values. Do not share credentials or add them to Vercel's VITE_ variables.
 
@@ -131,4 +133,4 @@ COLD_START_SETUP.md
 
 The unrelated existing README.md edits were left intact. The migration runner change only removes an unused import found by Ruff; it does not add or apply a database migration. ESLint now ignores the Python virtual environment and Python test/bytecode caches, preventing traversal of Windows-locked cache directories.
 
-Observed local validation: 62 frontend tests passed; 33 backend foundation and health/CORS tests passed against isolated SQLite; TypeScript and the production frontend build passed; Ruff passed; ESLint reported zero errors and 24 pre-existing component Fast Refresh warnings. No cloud database mutation or live login test was performed for this patch. The idle-to-awake deployment check remains pending.
+Observed local validation after the warm-up correction: 63 frontend tests passed; 33 backend foundation and health/CORS tests passed against isolated SQLite; TypeScript and the production frontend build passed; Ruff passed; ESLint reported zero errors and 24 pre-existing component Fast Refresh warnings. No cloud database mutation or live login test was performed for this patch. The idle-to-awake deployment check remains pending.
