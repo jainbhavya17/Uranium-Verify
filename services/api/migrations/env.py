@@ -1,5 +1,5 @@
 from alembic import context
-from sqlalchemy import create_engine, event
+from sqlalchemy import event
 from uranium.db import make_engine
 from uranium.config import Settings
 from uranium.models import Base

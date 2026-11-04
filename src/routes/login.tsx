@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, Check, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, Eye, EyeOff, LoaderCircle, ShieldCheck } from "lucide-react";
 import { PublicShell } from "@/components/portal";
 import { Link, useGo } from "@/components/link";
 import { useBackendSession, userHome } from "@/lib/backend-session";
@@ -16,14 +16,17 @@ export const Route = createFileRoute("/login")({
 });
 function Login() {
   const go = useGo();
-  const { login } = useBackendSession();
+  const { login, pending, waking, error: sessionError, retry } = useBackendSession();
   const [busy, setBusy] = useState(false);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [err, setErr] = useState("");
   const [show, setShow] = useState(false);
+  const waiting = busy || pending || waking;
+  const displayError = waiting ? "" : err || sessionError?.message || "";
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (waiting) return;
     setBusy(true);
     setErr("");
     try {
@@ -69,7 +72,7 @@ function Login() {
               <button
                 type="button"
                 key={a.email}
-                disabled={busy}
+                disabled={waiting}
                 onClick={() => {
                   setId(a.email);
                   setPw(demoAccounts.password);
@@ -86,7 +89,7 @@ function Login() {
             </small>
           </div>
           <p>Sign in with the credentials issued to you.</p>
-          <form onSubmit={submit} className="space-y-5">
+          <form onSubmit={submit} className="space-y-5" aria-busy={waiting}>
             <div>
               <label className="label" htmlFor="uid">
                 User ID or registered email
@@ -103,7 +106,7 @@ function Login() {
                 }}
                 autoComplete="username"
                 required
-                aria-describedby={err ? "login-error" : undefined}
+                aria-describedby={displayError ? "login-error" : undefined}
               />
             </div>
             <div>
@@ -128,7 +131,7 @@ function Login() {
                   }}
                   autoComplete="current-password"
                   required
-                  aria-describedby={err ? "login-error" : undefined}
+                  aria-describedby={displayError ? "login-error" : undefined}
                 />
                 <button
                   type="button"
@@ -141,16 +144,46 @@ function Login() {
                 </button>
               </div>
             </div>
-            {err && (
+            {waiting && (
+              <p
+                role="status"
+                aria-live="polite"
+                className="flex items-center gap-2 text-sm text-muted-foreground"
+              >
+                <LoaderCircle
+                  size={16}
+                  aria-hidden="true"
+                  className="animate-spin motion-reduce:animate-none shrink-0"
+                />
+                {waking
+                  ? "Server is waking up, please wait. This can take a minute or longer…"
+                  : busy
+                    ? "Signing in…"
+                    : "Connecting to the server…"}
+              </p>
+            )}
+            {displayError && (
               <p
                 id="login-error"
                 className="text-[11px] text-destructive leading-relaxed"
                 role="alert"
               >
-                {err}
+                {displayError}
               </p>
             )}
-            <button disabled={busy} className="btn btn-primary w-full">
+            {displayError && (
+              <button
+                type="button"
+                className="btn btn-outline w-full"
+                onClick={() => {
+                  setErr("");
+                  retry();
+                }}
+              >
+                Try again
+              </button>
+            )}
+            <button disabled={waiting} className="btn btn-primary w-full">
               Sign in to workspace <ArrowRight size={15} />
             </button>
           </form>

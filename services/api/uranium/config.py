@@ -14,7 +14,9 @@ def load_local_environment():
                 if key.strip() in {
                     "APP_ENV",
                     "AUTH_ADAPTER",
-                    "DATABASE_URL","DATABASE_SCHEMA",
+                    "DATABASE_URL",
+                    "DATABASE_SCHEMA",
+                    "CORS_ALLOWED_ORIGINS",
                     "STORAGE_ROOT",
                     "STORAGE_BACKEND",
                     "SUPABASE_URL",
@@ -48,6 +50,17 @@ load_local_environment()
 
 @dataclass
 class Settings:
+    cors_allowed_origins: tuple[str, ...] = field(
+        default_factory=lambda: tuple(
+            origin.strip().rstrip("/")
+            for origin in os.getenv(
+                "CORS_ALLOWED_ORIGINS",
+                "https://uraniumverify.vercel.app,http://localhost:5173,http://127.0.0.1:5173,"
+                "http://localhost:5174,http://127.0.0.1:5174,http://localhost:5184,http://127.0.0.1:5184",
+            ).split(",")
+            if origin.strip()
+        )
+    )
     environment: str = field(default_factory=lambda: os.getenv("APP_ENV", "development"))
     auth_adapter: str = field(default_factory=lambda: os.getenv("AUTH_ADAPTER", "demo"))
     database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", "sqlite:///./var/uranium.db"))
@@ -57,6 +70,21 @@ class Settings:
     cookie_secure: bool = field(default_factory=lambda: os.getenv("COOKIE_SECURE", "false").lower() == "true")
 
     def validate(self):
+        from urllib.parse import urlsplit
+
+        for origin in self.cors_allowed_origins:
+            parsed = urlsplit(origin)
+            if (
+                parsed.scheme not in {"http", "https"}
+                or not parsed.netloc
+                or "*" in origin
+                or parsed.path
+                or parsed.query
+                or parsed.fragment
+                or parsed.username
+                or parsed.password
+            ):
+                raise RuntimeError("CORS_ALLOWED_ORIGINS must contain exact HTTP(S) origins")
         if self.environment not in {"development", "test"} or self.auth_adapter != "demo":
             raise RuntimeError(
                 "Only the isolated development/test auth adapter is implemented. Production is disabled."

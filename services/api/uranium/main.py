@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select, text
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -71,6 +72,28 @@ def create_app(settings=None):
     app.state.engine, app.state.session_factory, app.state.storage = engine, factory, storage
     app.state.environment = settings.environment
     app.state.processing_policy = policy
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(settings.cors_allowed_origins),
+        allow_credentials=True,
+        allow_methods=["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Accept", "Content-Type", "X-CSRF-Token", "Authorization"],
+    )
+
+    @app.get("/health", include_in_schema=False)
+    def wake_health():
+        # Public liveness/wake-up check. The existing /api/v1/health remains
+        # the strict readiness check for Render; a DB outage must not restart
+        # an otherwise running process merely because a pinger contacted it.
+        try:
+            with engine.begin() as connection:
+                if engine.dialect.name == "postgresql":
+                    connection.execute(text("SET LOCAL statement_timeout = '3000ms'"))
+                connection.execute(text("SELECT 1"))
+            return {"ok": True, "db": True}
+        except Exception:
+            return {"ok": True, "db": False}
 
     def envelope(request, data=None, error=None, **meta):
         return {
@@ -232,7 +255,10 @@ def create_app(settings=None):
         except SQLAlchemyError:
             raise HTTPException(503, "Database unavailable or migration missing.")
         return envelope(
-            request, HealthView(status="ok", database="ready", storage=getattr(storage, "adapter_name", "private-local")).model_dump()
+            request,
+            HealthView(
+                status="ok", database="ready", storage=getattr(storage, "adapter_name", "private-local")
+            ).model_dump(),
         )
 
     @app.post("/api/v1/auth/session", response_model=Envelope[UserView])
@@ -599,10 +625,19 @@ def create_app(settings=None):
     )
     from .portal_content import install_portal_content
 
-    install_portal_content(app, db_session=db_session, principal=principal,
-                           require_roles=require_roles, envelope=envelope)
+    install_portal_content(
+        app, db_session=db_session, principal=principal, require_roles=require_roles, envelope=envelope
+    )
     from .restored_portal import install_restored_portal
-    install_restored_portal(app, db_session=db_session, principal=principal, require_case=require_case, require_roles=require_roles, envelope=envelope)
+
+    install_restored_portal(
+        app,
+        db_session=db_session,
+        principal=principal,
+        require_case=require_case,
+        require_roles=require_roles,
+        envelope=envelope,
+    )
     return app
 
 
