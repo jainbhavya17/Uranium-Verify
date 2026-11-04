@@ -2,6 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
+      "source": "/health",
+      "destination": "https://uranium-verify-api.onrender.com/health"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://uranium-verify-api.onrender.com/api/:path*"
     }

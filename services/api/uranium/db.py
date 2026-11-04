@@ -17,7 +17,9 @@ def make_engine(url: str):
 
     engine = create_engine(
         url,
-        connect_args={"check_same_thread": False} if is_sqlite else {},
+        connect_args={"check_same_thread": False} if is_sqlite else {"connect_timeout": 5},
+        pool_pre_ping=True,
+        **({} if is_sqlite else {"pool_timeout": 5}),
     )
 
     if is_sqlite:
@@ -39,9 +41,7 @@ def make_engine(url: str):
                 try:
                     connection.autocommit = True
                     with connection.cursor() as cursor:
-                        cursor.execute(
-                            f'SET search_path TO "{schema}", public'
-                        )
+                        cursor.execute(f'SET search_path TO "{schema}", public')
                 finally:
                     connection.autocommit = previous_autocommit
 

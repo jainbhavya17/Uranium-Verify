@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { BackendSessionProvider } from "@/lib/backend-session";
+import { warmUp } from "@/lib/api-connection";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/lib/seo";
 
 import appCss from "../styles.css?url";
@@ -115,6 +116,9 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => {
+    warmUp();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useSyncExternalStore, type ReactNode } from "react";
+import { getConnectionWaiting, subscribeConnectionWaiting } from "@/lib/api-connection";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, ApiError, type User } from "@/features/api";
 import { portalPath } from "@/features/navigation";
@@ -13,6 +14,7 @@ export type PortalUser = User & { role: PortalRole };
 const SessionContext = createContext<{
   user: PortalUser | null;
   pending: boolean;
+  waking: boolean;
   error: Error | null;
   login: (email: string, password: string) => Promise<User>;
   logout: () => Promise<void>;
@@ -20,13 +22,18 @@ const SessionContext = createContext<{
 } | null>(null);
 export function BackendSessionProvider({ children }: { children: ReactNode }) {
   const qc = useQueryClient();
+  const waking = useSyncExternalStore(
+    subscribeConnectionWaiting,
+    getConnectionWaiting,
+    () => false,
+  );
   const q = useQuery({
     queryKey: ["backend-session"],
     retry: false,
     staleTime: 30000,
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       try {
-        return (await api<User>("/me")).data;
+        return (await api<User>("/me", { signal })).data;
       } catch (e) {
         if (e instanceof ApiError && e.status === 401) return null;
         throw e;
@@ -47,7 +54,8 @@ export function BackendSessionProvider({ children }: { children: ReactNode }) {
     <SessionContext.Provider
       value={{
         user,
-        pending: q.isPending,
+        pending: q.isPending || (!q.data && q.isFetching),
+        waking,
         error: q.error,
         retry: () => {
           void q.refetch();
