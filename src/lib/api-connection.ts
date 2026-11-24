@@ -1,7 +1,7 @@
-// Direct origin is for public wake-up requests. Keep cookie-authenticated
-// requests under the same-origin Vercel/Vite proxy (see VITE_API_BASE_URL).
+// Keep API requests, including the public wake-up check, under the same-origin
+// Vercel/Vite proxy. This avoids browser cross-site request blocking and keeps
+// the session cookies first-party.
 const normalize = (value: string) => value.trim().replace(/\/+$/, "");
-export const API_URL = normalize(import.meta.env.VITE_API_URL ?? "");
 export const API_BASE_URL = normalize(import.meta.env.VITE_API_BASE_URL ?? "/api/v1");
 export const apiUrl = (path: string) => `${API_BASE_URL}/${path.replace(/^\/+/, "")}`;
 
@@ -27,11 +27,9 @@ function wakeBackend() {
   if (typeof window === "undefined" || warmRequest) return;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), WARM_UP_TIMEOUT);
-  warmRequest = fetch(`${API_URL}/health`, {
+  warmRequest = fetch("/health", {
     method: "GET",
-    // This public request only triggers startup; its opaque response is ignored.
-    // Preview origins need not read Render's response to initiate the request.
-    mode: "no-cors",
+    // The same-origin Vercel/Vite route proxies this public startup check.
     credentials: "omit",
     cache: "no-store",
     signal: controller.signal,
@@ -70,6 +68,16 @@ function wait(delay: number, signal?: AbortSignal | null) {
   });
 }
 
+function shouldRetryResponse(response: Response) {
+  if (GATEWAY_ERRORS.has(response.status)) return true;
+  if (response.status !== 429) return false;
+
+  // Cloudflare's edge limit response is plain text; the API's own rate-limit
+  // response is JSON and should be shown immediately without another login try.
+  const contentType = response.headers?.get("content-type")?.toLowerCase() ?? "";
+  return Boolean(contentType) && !contentType.includes("json");
+}
+
 export async function fetchWithRetry(
   url: string,
   options: RequestInit = {},
@@ -88,8 +96,8 @@ export async function fetchWithRetry(
       const timer = setTimeout(abort, ATTEMPT_TIMEOUT);
       try {
         const response = await fetch(url, { ...options, signal: controller.signal });
-        // Never retry 401, 403, validation, rate-limit or other real API errors.
-        if (!GATEWAY_ERRORS.has(response.status) || attempt === tries - 1) return response;
+        // Never retry auth, validation, or JSON application rate-limit errors.
+        if (!shouldRetryResponse(response) || attempt === tries - 1) return response;
         await response.body?.cancel().catch(() => undefined);
       } catch (error) {
         if (options.signal?.aborted || attempt === tries - 1) throw error;

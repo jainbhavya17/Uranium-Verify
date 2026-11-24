@@ -13,7 +13,6 @@ describe("bounded session connection retries", () => {
 
   async function setup() {
     vi.resetModules();
-    vi.stubEnv("VITE_API_URL", "https://synthetic.onrender.com///");
     vi.stubEnv("VITE_API_BASE_URL", "/api/v1/");
     const requests: { url: string; method: string }[] = [];
     const queue: (number | Error)[] = [];
@@ -28,20 +27,20 @@ describe("bounded session connection retries", () => {
     return { connection: await import("./api-connection"), requests, queue, fetcher };
   }
 
-  it("normalizes URLs and fires only one non-blocking initial warm-up without cookies", async () => {
+  it("normalizes URLs and fires one non-blocking same-origin warm-up without cookies", async () => {
     const { connection, fetcher } = await setup();
     expect(connection.apiUrl("/auth/session")).toBe("/api/v1/auth/session");
     connection.warmUp();
     connection.warmUp();
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(
-      "https://synthetic.onrender.com/health",
-      expect.objectContaining({ credentials: "omit", cache: "no-store", mode: "no-cors" }),
+      "/health",
+      expect.objectContaining({ credentials: "omit", cache: "no-store" }),
     );
     await vi.advanceTimersByTimeAsync(0);
   });
 
-  it("allows a direct warm-up to continue beyond the session-attempt timeout", async () => {
+  it("allows the same-origin warm-up to continue beyond the session-attempt timeout", async () => {
     const { connection, fetcher } = await setup();
     let signal: AbortSignal | null | undefined;
     fetcher.mockImplementation((_url, options) => {
