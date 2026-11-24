@@ -68,16 +68,6 @@ function wait(delay: number, signal?: AbortSignal | null) {
   });
 }
 
-function shouldRetryResponse(response: Response) {
-  if (GATEWAY_ERRORS.has(response.status)) return true;
-  if (response.status !== 429) return false;
-
-  // Cloudflare's edge limit response is plain text; the API's own rate-limit
-  // response is JSON and should be shown immediately without another login try.
-  const contentType = response.headers?.get("content-type")?.toLowerCase() ?? "";
-  return Boolean(contentType) && !contentType.includes("json");
-}
-
 export async function fetchWithRetry(
   url: string,
   options: RequestInit = {},
@@ -96,8 +86,8 @@ export async function fetchWithRetry(
       const timer = setTimeout(abort, ATTEMPT_TIMEOUT);
       try {
         const response = await fetch(url, { ...options, signal: controller.signal });
-        // Never retry auth, validation, or JSON application rate-limit errors.
-        if (!shouldRetryResponse(response) || attempt === tries - 1) return response;
+        // Retry only gateway errors. 429 is a rate limit and must not be retried.
+        if (!GATEWAY_ERRORS.has(response.status) || attempt === tries - 1) return response;
         await response.body?.cancel().catch(() => undefined);
       } catch (error) {
         if (options.signal?.aborted || attempt === tries - 1) throw error;
